@@ -219,6 +219,30 @@ Gradient descent ត្រូវបានប្រើដើម្បីបណ្
 - **Logistic Regression**: បញ្ហា classification
 - **Support Vector Machines**: ការស្វែងរក optimal hyperplanes
 
+### Gradient Descent ក្នុង Deep Learning
+
+<div class="w-full max-w-2xl mx-auto bg-white rounded-lg shadow-md overflow-hidden mb-2" style="height: 340px;">
+  <img src="/assets/img/deep-rl-khmer.png" alt="Deep Learning Neural Network and Cost Function" class="w-full h-full" style="object-fit: contain;" />
+</div>
+<p class="text-center text-sm text-text-secondary mb-6 italic">
+  Deep Neural Network ប្រើ Gradient Descent ដើម្បីបណ្តុះបណ្តាលទម្ងន់ (weights) ក្នុង layers ផ្សេងៗ
+</p>
+
+រូបភាពខាងលើបង្ហាញពី **Deep Neural Network** — ប្រភេទ Neural Network ពេញនិយមមួយ ដែលប្រើ Gradient Descent ដើម្បី optimize cost function។
+
+ក្នុង Deep Learning:
+- **Input Layer** ទទួល data (ឧ. pixels នៃរូបភាព, ពាក្យ,  លេខ)
+- **Hidden Layers** ជ្រើរើសធ្វើ feature extraction — ស្វែងរកគំរូ (patterns) ស្មុគស្មាញ ពីទិន្នន័យ
+- **Output Layer** ផ្តល់ការទស្សន៍ទាយ (prediction) ចុងក្រោយ
+- **Weights** $w$ (ទម្ងន់) ក្នុង connections នីមួយៗ គឺជា **parameters $\theta$** ដែល Gradient Descent ត្រូវ optimize
+
+ក្នុងអំឡុងពេល **Training**:
+$$
+\text{Forward Pass} \rightarrow \text{Compute Loss } J(\theta) \rightarrow \text{Backpropagation} \rightarrow \text{Gradient Descent Update}
+$$
+
+Network មួយ មាន neurons រាប់លាន → weights រាប់លាន → gradient vector មាន **រាប់លាន dimensions** — ប៉ុន្តែ Gradient Descent ដំណើរការដូចគ្នានឹង 1D ដែរ: update ក្នុងទិស opposite នៃ gradient!
+
 ## ជំហានបន្ទាប់
 
 នៅពេលអ្នកយល់ដឹង gradient descent, អ្នកអាចស្រាវជ្រាវ Algorithms បន្ថែមដូចជា:

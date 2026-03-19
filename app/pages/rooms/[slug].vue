@@ -73,16 +73,17 @@ useSeoMeta({
     <div class="min-h-screen bg-bg">
         <!-- Header -->
         <header class="relative bg-linear-to-b from-bg-secondary to-bg border-b border-border overflow-hidden">
-            <div class="max-w-screen-2xl mx-auto px-8 py-12 pb-16 md:py-16 relative z-10">
+            <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 md:px-8 py-8 sm:py-10 pb-12 md:py-16 relative z-10">
                 <!-- Top Right Controls -->
-                <div class="absolute top-8 right-8 z-20 flex items-center gap-3">
+                <div
+                    class="absolute top-4 right-4 sm:top-6 sm:right-6 md:top-8 md:right-8 z-20 flex items-center gap-2 sm:gap-3">
                     <AuthorLink />
                     <LanguageSwitcher />
                     <ColorModeButton />
                 </div>
 
                 <NuxtLink to="/"
-                    class="inline-flex items-center gap-2 text-text-secondary no-underline text-[15px] font-medium transition-all duration-300 mb-10 hover:text-text hover:gap-3 group">
+                    class="inline-flex items-center gap-2 text-text-secondary no-underline text-sm sm:text-[15px] font-medium transition-all duration-300 mb-6 sm:mb-10 hover:text-text hover:gap-3 group">
                     <svg class="w-5 h-5 transition-transform duration-300 group-hover:-translate-x-1" fill="none"
                         stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
@@ -92,11 +93,11 @@ useSeoMeta({
 
                 <div class="max-w-4xl">
                     <h1
-                        class="room-title text-[clamp(2rem,5vw,3.5rem)] font-bold leading-tight mb-5 tracking-tight text-text">
+                        class="room-title text-2xl sm:text-3xl md:text-[clamp(2rem,4vw,3.5rem)] font-bold leading-tight mb-3 sm:mb-5 tracking-tight text-text">
                         {{ page?.title }}
                     </h1>
                     <p v-if="page?.description"
-                        class="room-description text-[19px] text-text-secondary leading-relaxed">
+                        class="room-description text-base sm:text-[17px] md:text-[19px] text-text-secondary leading-relaxed">
                         {{ page.description }}
                     </p>
 
@@ -149,7 +150,7 @@ useSeoMeta({
         </header>
 
         <!-- Content -->
-        <main class="py-16 px-8 relative -mt-12">
+        <main class="py-8 sm:py-12 md:py-16 px-3 sm:px-6 md:px-8 relative -mt-8 sm:-mt-12">
             <!-- Top fade overlay for smooth transition from header -->
             <div
                 class="absolute top-0 left-0 right-0 h-16 bg-gradient-to-b from-(--color-bg-secondary)/50 to-transparent pointer-events-none">
@@ -157,14 +158,14 @@ useSeoMeta({
 
             <div class="max-w-screen-2xl mx-auto relative z-10">
                 <article
-                    class="bg-bg-card border border-border rounded-2xl p-12 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.2)] md:p-8 sm:p-6">
+                    class="bg-bg-card border border-border rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 lg:p-12 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.2)]">
                     <ContentRenderer v-if="page" :value="page" class="prose" />
                 </article>
             </div>
         </main>
 
         <!-- Footer -->
-        <footer class="bg-bg-secondary border-t border-border py-10 px-8 mt-16">
+        <footer class="bg-bg-secondary border-t border-border py-8 sm:py-10 px-4 sm:px-8 mt-8 sm:mt-16">
             <div class="max-w-screen-2xl mx-auto">
                 <div class="flex flex-col md:flex-row items-center justify-between gap-6">
                     <NuxtLink to="/"

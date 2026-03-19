@@ -87,26 +87,49 @@ mjx-container {
 .prose h2 {
     color: var(--color-text);
     font-weight: 600;
-    font-size: 1.875rem;
-    margin-top: 3rem;
-    margin-bottom: 1.25rem;
+    font-size: 1.375rem;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
     letter-spacing: -0.025em;
+}
+
+@media (min-width: 640px) {
+    .prose h2 {
+        font-size: 1.875rem;
+        margin-top: 3rem;
+        margin-bottom: 1.25rem;
+    }
 }
 
 .prose h3 {
     color: var(--color-text);
     font-weight: 600;
-    font-size: 1.5rem;
-    margin-top: 2.5rem;
-    margin-bottom: 1rem;
+    font-size: 1.125rem;
+    margin-top: 1.75rem;
+    margin-bottom: 0.75rem;
     letter-spacing: -0.02em;
+}
+
+@media (min-width: 640px) {
+    .prose h3 {
+        font-size: 1.5rem;
+        margin-top: 2.5rem;
+        margin-bottom: 1rem;
+    }
 }
 
 .prose p {
     color: var(--color-text-secondary);
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.25rem;
     line-height: 1.75;
-    font-size: 1.0625rem;
+    font-size: 0.9375rem;
+}
+
+@media (min-width: 640px) {
+    .prose p {
+        font-size: 1.0625rem;
+        margin-bottom: 1.5rem;
+    }
 }
 
 .prose strong {

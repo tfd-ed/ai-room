@@ -13,20 +13,6 @@ export default defineNuxtConfig({
     'nuxt-og-image',
     'motion-v/nuxt'
   ],
-  // fonts: {
-  //   defaults: {
-  //     weights: [400, 700],
-  //     styles: ['normal', 'italic'],
-  //     subsets: [
-  //       'khmer',
-  //       'latin',
-  //     ]
-  //   },
-  //   families: [
-  //     { name: 'Inter', provider: 'google' },
-  //     { name: 'Noto+Serif+Khmer', provider: 'google' },
-  //   ]
-  // },
   css: ['./app/assets/css/main.css', 'katex/dist/katex.min.css'],
   devtools: { enabled: true },
   compatibilityDate: "2025-07-15",
@@ -51,7 +37,9 @@ export default defineNuxtConfig({
           defer: true
         }
       ]
-    }
+    },
+    // Enable client-side page transition caching
+    keepalive: true,
   },
   content: {
     build: {
@@ -106,6 +94,21 @@ export default defineNuxtConfig({
         '/en/rooms/gradient-descent',
       ],
     },
+    // Cache static assets and API responses
+    routeRules: {
+      // Static pages - cache for 1 day, revalidate in background
+      '/': { isr: 3600, headers: { 'cache-control': 's-maxage=3600, stale-while-revalidate=86400' } },
+      '/en': { isr: 3600, headers: { 'cache-control': 's-maxage=3600, stale-while-revalidate=86400' } },
+      '/rooms/**': { isr: 3600, headers: { 'cache-control': 's-maxage=3600, stale-while-revalidate=86400' } },
+      '/en/rooms/**': { isr: 3600, headers: { 'cache-control': 's-maxage=3600, stale-while-revalidate=86400' } },
+      // API - short cache
+      '/api/health': { headers: { 'cache-control': 'no-store' } },
+      // OG images - long cache (they rarely change)
+      '/__og-image__/**': { headers: { 'cache-control': 'public, max-age=86400, stale-while-revalidate=604800' } },
+      // Static assets - very long cache (fingerprinted by Vite)
+      '/_nuxt/**': { headers: { 'cache-control': 'public, max-age=31536000, immutable' } },
+    },
+    compressPublicAssets: true,
   },
   ogImage: {
     zeroRuntime: true

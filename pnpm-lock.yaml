@@ -23,18 +23,9 @@ importers:
       '@nuxtjs/i18n':
         specifier: 10.2.3
         version: 10.2.3(@vue/compiler-dom@3.5.30)(db0@0.3.4(better-sqlite3@12.8.0))(eslint@10.0.3(jiti@2.6.1))(ioredis@5.10.0)(magicast@0.5.2)(rollup@4.59.0)(vue@3.5.30(typescript@5.9.3))
-      '@resvg/resvg-js':
-        specifier: ^2.6.2
-        version: 2.6.2
-      '@stefanobartoletti/nuxt-social-share':
-        specifier: ^2.3.1
-        version: 2.3.1(magicast@0.5.2)
       '@tailwindcss/vite':
         specifier: ^4.2.1
         version: 4.2.1(vite@7.3.1(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.32.0)(terser@5.46.1)(yaml@2.8.2))
-      '@takumi-rs/core':
-        specifier: ^0.73.1
-        version: 0.73.1
       better-sqlite3:
         specifier: ^12.8.0
         version: 12.8.0
@@ -56,15 +47,25 @@ importers:
       remark-math:
         specifier: ^6.0.0
         version: 6.0.0
-      satori:
-        specifier: ^0.25.0
-        version: 0.25.0
       sharp:
         specifier: ^0.34.5
         version: 0.34.5
       tailwindcss:
         specifier: ^4.2.1
         version: 4.2.1
+    devDependencies:
+      '@resvg/resvg-js':
+        specifier: ^2.6.2
+        version: 2.6.2
+      '@stefanobartoletti/nuxt-social-share':
+        specifier: ^2.3.1
+        version: 2.3.1(magicast@0.5.2)
+      '@takumi-rs/core':
+        specifier: ^0.73.1
+        version: 0.73.1
+      satori:
+        specifier: ^0.25.0
+        version: 0.25.0
 
 packages:
 

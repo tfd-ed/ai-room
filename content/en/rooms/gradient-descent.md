@@ -219,6 +219,30 @@ Gradient descent is used to train:
 - **Logistic Regression**: Classification problems
 - **Support Vector Machines**: Finding optimal hyperplanes
 
+### Gradient Descent in Deep Learning
+
+<div class="w-full max-w-2xl mx-auto bg-white rounded-lg shadow-md overflow-hidden mb-2" style="height: 340px;">
+  <img src="/assets/img/deep-rl-khmer.png" alt="Deep Learning Neural Network and Cost Function" class="w-full h-full" style="object-fit: contain;" />
+</div>
+<p class="text-center text-sm text-text-secondary mb-6 italic">
+  A deep neural network uses gradient descent to train weights across all its layers by minimizing the cost function.
+</p>
+
+The image above shows a **Deep Neural Network** — a powerful type of model that directly relies on gradient descent to optimize its cost function.
+
+In deep learning:
+- **Input Layer** receives raw data (e.g. image pixels, words, numbers)
+- **Hidden Layers** perform feature extraction — learning complex patterns from data
+- **Output Layer** produces the final prediction
+- **Weights** $w$ in each connection are the **parameters $\theta$** that gradient descent optimizes
+
+During **training**, the process is:
+$$
+\text{Forward Pass} \rightarrow \text{Compute Loss } J(\theta) \rightarrow \text{Backpropagation} \rightarrow \text{Gradient Descent Update}
+$$
+
+A network may have millions of neurons → millions of weights → a gradient vector with **millions of dimensions** — yet gradient descent works exactly the same way as in the 1D case: move opposite to the gradient to reduce the loss!
+
 ## Next Steps
 
 Once you understand gradient descent, you can explore advanced variations:
