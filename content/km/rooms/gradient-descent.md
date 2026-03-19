@@ -1,5 +1,5 @@
 ---
-title: 'ស្វែងយល់ពី Algorithm Gradient Descent'
+title: 'ស្វែងយល់ពី Gradient Descent Algorithm'
 description: 'ស្វែងយល់ពីរ Algorithm ដែលជាមូលដ្ឋានគ្រឹះនៃ Machine Learning។ យល់ដឹងពីរបៀបដែលវាស្វែងរកតម្លៃអប្បបរមានៃអនុគមន៍ម្តងមួយជំហានៗ។'
 author: 'ចៅ ដារ៉ា - Founder of TFDevs'
 date: '2026-03-19'

@@ -103,7 +103,7 @@ export default defineNuxtConfig({
         '/',
         '/rooms/gradient-descent',
         '/en',
-        '/rooms/en/gradient-descent',
+        '/en/rooms/gradient-descent',
       ],
     },
   },
