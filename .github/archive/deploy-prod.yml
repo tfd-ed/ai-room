@@ -1,0 +1,88 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  build-and-deploy:
+    runs-on: [self-hosted]
+
+    env:
+      IMAGE_LOCAL: localhost:5000/phone-shop-api
+      IMAGE_REGISTRY: registry.homelab.local/phone-shop-api
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: |
+          docker build -f Dockerfile-k8s . \
+            -t $IMAGE_LOCAL:prod-${{ github.sha }} \
+            -t $IMAGE_LOCAL:prod-latest \
+            -t $IMAGE_REGISTRY:prod-${{ github.sha }} \
+            -t $IMAGE_REGISTRY:prod-latest
+
+      - name: Push to registry
+        run: |
+          docker push $IMAGE_LOCAL:prod-latest
+          docker push $IMAGE_LOCAL:prod-${{ github.sha }}
+
+          docker push $IMAGE_REGISTRY:prod-latest
+          docker push $IMAGE_REGISTRY:prod-${{ github.sha }}
+
+      - name: Verify image
+        run: |
+          echo "Production images pushed successfully:"
+          echo "  - $IMAGE_REGISTRY:prod-${{ github.sha }}"
+          echo "  - $IMAGE_REGISTRY:prod-latest"
+
+      - name: Verify image is pullable
+        run: |
+          docker pull $IMAGE_REGISTRY:prod-${{ github.sha }}
+          echo "✓ Image pull successful"
+
+      - name: Deploy to Production Kubernetes
+        run: |
+          kubectl apply -f k8s/namespaces.yaml
+          kubectl apply -f k8s/ingress-configmap.yaml
+          kubectl apply -f k8s/prod/service.yaml
+          kubectl apply -f k8s/prod/deployment.yaml
+          kubectl apply -f k8s/prod/ingress.yaml
+
+      - name: Update deployment image
+        run: |
+          kubectl set image deployment/phone-shop-api-prod \
+            phone-shop-api=$IMAGE_REGISTRY:prod-${{ github.sha }} \
+            -n prod
+          echo "Updated prod deployment to: registry.homelab.local/phone-shop-api:prod-${{ github.sha }}"
+
+      - name: Check pod status
+        if: always()
+        run: |
+          echo "Checking production pod status..."
+          kubectl get pods -n prod -l app=phone-shop-api
+          kubectl describe pods -n prod -l app=phone-shop-api | tail -50
+
+      - name: Wait for rollout
+        run: |
+          kubectl rollout status deployment/phone-shop-api-prod -n prod --timeout=5m
+
+      - name: Verify deployment
+        run: |
+          echo "Production deployment completed successfully!"
+          kubectl get pods -n prod -l app=phone-shop-api -o wide
+          kubectl get svc -n prod phone-shop-api-service
+          kubectl get ingress -n prod phone-shop-ingress
+
+      - name: Deployment summary
+        run: |
+          echo "========================================="
+          echo "🚀 Production Deployment Complete!"
+          echo "========================================="
+          echo "Image: $IMAGE_REGISTRY:prod-${{ github.sha }}"
+          echo "URL: https://shop-api.tfdevs.com"
+          echo "Replicas: $(kubectl get deployment phone-shop-api-prod -n prod -o jsonpath='{.status.readyReplicas}')/$(kubectl get deployment phone-shop-api-prod -n prod -o jsonpath='{.spec.replicas}')"
+          echo "========================================="
