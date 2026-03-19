@@ -1,0 +1,59 @@
+name: Teardown Production
+
+on:
+    workflow_dispatch:
+        inputs:
+            confirm:
+                description: 'Type "teardown" to confirm destruction of the production deployment'
+                required: true
+                type: string
+
+jobs:
+    teardown:
+        runs-on: [self-hosted]
+
+        steps:
+            - name: Validate confirmation
+              run: |
+                  if [ "${{ github.event.inputs.confirm }}" != "teardown" ]; then
+                    echo "❌ Confirmation failed. You must type 'teardown' to proceed."
+                    exit 1
+                  fi
+                  echo "✓ Confirmation accepted. Proceeding with teardown..."
+
+            - name: Delete Ingress
+              run: |
+                  kubectl delete ingress ai-ml-room-ingress -n prod --ignore-not-found
+                  echo "✓ Ingress deleted"
+
+            - name: Delete Service
+              run: |
+                  kubectl delete service ai-ml-room-service -n prod --ignore-not-found
+                  echo "✓ Service deleted"
+
+            - name: Delete Deployment
+              run: |
+                  kubectl delete deployment ai-ml-room-prod -n prod --ignore-not-found
+                  echo "✓ Deployment deleted"
+
+            - name: Wait for pods to terminate
+              run: |
+                  echo "Waiting for pods to terminate..."
+                  kubectl wait --for=delete pod -l app=ai-ml-room -n prod --timeout=2m || true
+
+            - name: Verify teardown
+              run: |
+                  echo "Remaining resources in prod namespace (app=ai-ml-room):"
+                  kubectl get all -n prod -l app=ai-ml-room || true
+
+            - name: Teardown summary
+              run: |
+                  echo "========================================="
+                  echo "💀 Production Teardown Complete!"
+                  echo "========================================="
+                  echo "Removed:"
+                  echo "  - Deployment: ai-ml-room-prod"
+                  echo "  - Service:    ai-ml-room-service"
+                  echo "  - Ingress:    ai-ml-room-ingress"
+                  echo "Namespace 'prod' still exists."
+                  echo "========================================="
