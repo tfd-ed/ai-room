@@ -16,7 +16,8 @@ RUN pnpm install --frozen-lockfile || pnpm install
 # Copy source code
 COPY . .
 
-# Build the application
+# Build the application with increased heap size
+ENV NODE_OPTIONS="--max-old-space-size=4096"
 RUN pnpm run build
 
 # Production stage
