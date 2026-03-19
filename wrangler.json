@@ -1,0 +1,4 @@
+{
+  "name": "my-nuxt-blog",
+  "pages_build_output_dir": ".output/public"
+}
