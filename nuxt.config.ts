@@ -14,8 +14,8 @@ export default defineNuxtConfig({
     'motion-v/nuxt'
   ],
   css: ['./app/assets/css/main.css', 'katex/dist/katex.min.css'],
-  devtools: { enabled: true },
-  compatibilityDate: "2025-07-15",
+  devtools: { enabled: false },
+  compatibilityDate: "2024-09-19",
   colorMode: {
     classSuffix: '',
     preference: 'system',
@@ -86,6 +86,7 @@ export default defineNuxtConfig({
   },
   nitro: {
     prerender: {
+      autoSubfolderIndex: false,
       crawlLinks: true,
       routes: [
         '/',
