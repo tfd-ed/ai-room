@@ -96,7 +96,19 @@ export default defineNuxtConfig({
     url: 'https://ai.tfdevs.com',
     name: 'AI & ML Room',
   },
+  nitro: {
+    prerender: {
+      crawlLinks: true,
+      routes: [
+        '/',
+        '/rooms/gradient-descent',
+        '/en',
+        '/rooms/en/gradient-descent',
+      ],
+    },
+  },
   ogImage: {
+    zeroRuntime: true
     // fontSubsets: ['latin', 'khmer'],
     // fonts: [
     //   'Inter',

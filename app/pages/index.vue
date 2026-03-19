@@ -20,10 +20,6 @@ useSeoMeta({
     twitterDescription: siteSubtitle
 })
 
-useHead({
-    title: siteTitle
-})
-
 const rooms = [
     {
         titleKey: 'rooms.gradientDescent.title',

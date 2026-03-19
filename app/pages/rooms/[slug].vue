@@ -67,10 +67,6 @@ useSeoMeta({
     twitterTitle: pageTitle,
     twitterDescription: page.value.description
 })
-
-useHead({
-    title: pageTitle
-})
 </script>
 
 <template>
