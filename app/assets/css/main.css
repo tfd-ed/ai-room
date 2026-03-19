@@ -182,3 +182,7 @@ mjx-container {
     -webkit-text-fill-color: transparent;
     background-clip: text;
 }
+
+.katex-display {
+    @apply overflow-x-auto overflow-y-hidden text-nowrap;
+}
