@@ -1,0 +1,39 @@
+{
+  "name": "ai-ml-room",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview"
+  },
+  "dependencies": {
+    "@nuxt/content": "^3.12.0",
+    "@nuxt/eslint": "1.15.2",
+    "@nuxt/ui": "4.5.1",
+    "@nuxtjs/google-fonts": "3.2.0",
+    "@nuxtjs/i18n": "10.2.3",
+    "@tailwindcss/vite": "^4.2.1",
+    "better-sqlite3": "^12.8.0",
+    "motion-v": "^2.0.1",
+    "nuxt": "^4.4.2",
+    "nuxt-og-image": "6.0.4",
+    "rehype-katex": "^7.0.1",
+    "rehype-mathjax": "^7.1.0",
+    "remark-math": "^6.0.0",
+    "tailwindcss": "^4.2.1"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "better-sqlite3",
+      "sqlite3"
+    ]
+  },
+  "devDependencies": {
+    "@resvg/resvg-js": "^2.6.2",
+    "@stefanobartoletti/nuxt-social-share": "^2.3.1",
+    "@takumi-rs/core": "^0.73.1",
+    "satori": "^0.25.0"
+  }
+}

@@ -1,0 +1,1176 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Interactive Learning Rate Visualization</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:ital,wght@0,100..700;1,100..700&family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['"Source Serif 4"', "serif"],
+              khmer: ['"Kantumruy Pro"', "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      /* Default font for English */
+      body {
+        font-family: "Source Serif 4", serif;
+      }
+
+      /* Khmer font when locale is Khmer */
+      [lang="km"],
+      [lang="km"] *,
+      html[lang="km"] body,
+      html[lang="km"] body * {
+        font-family: "Kantumruy Pro", sans-serif;
+      }
+
+      /* Ensure buttons and inputs use consistent fonts */
+      button,
+      input,
+      select,
+      textarea {
+        font-family: inherit;
+      }
+
+      /* 3D Plot styling */
+      .plotly {
+        width: 100%;
+        height: 100%;
+      }
+
+      .plotly .svg-container {
+        width: 100% !important;
+        height: 100% !important;
+      }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://unpkg.com/vue-i18n@9/dist/vue-i18n.global.js"></script>
+  </head>
+  <body class="bg-gray-50">
+    <div id="app" class="min-h-screen py-8" :lang="currentLocale">
+      <div class="max-w-7xl mx-auto px-4">
+        <!-- Header -->
+        <div class="text-center mb-8">
+          <div class="flex justify-end mb-2">
+            <button
+              @click="toggleLanguage"
+              class="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-2 px-4 rounded-lg transition flex items-center gap-2"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M7 2a1 1 0 011 1v1h3a1 1 0 110 2H9.578a18.87 18.87 0 01-1.724 4.78c.29.354.596.696.914 1.026a1 1 0 11-1.44 1.389c-.188-.196-.373-.396-.554-.6a19.098 19.098 0 01-3.107 3.567 1 1 0 01-1.334-1.49 17.087 17.087 0 003.13-3.733 18.992 18.992 0 01-1.487-2.494 1 1 0 111.79-.89c.234.47.489.928.764 1.372.417-.934.752-1.913.997-2.927H3a1 1 0 110-2h3V3a1 1 0 011-1zm6 6a1 1 0 01.894.553l2.991 5.982a.869.869 0 01.02.037l.99 1.98a1 1 0 11-1.79.895L15.383 16h-4.764l-.724 1.447a1 1 0 11-1.788-.894l.99-1.98.019-.038 2.99-5.982A1 1 0 0113 8zm-1.382 6h2.764L13 11.236 11.618 14z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+              {{ currentLocale === 'en' ? 'ខ្មែរ' : 'English' }}
+            </button>
+          </div>
+          <h1 class="text-4xl font-bold text-gray-800 mb-2">
+            {{ t('title') }}
+          </h1>
+          <p class="text-gray-600">{{ t('subtitle') }}</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <!-- Controls Panel -->
+          <div class="lg:col-span-1">
+            <div class="bg-white rounded-lg shadow-lg p-6">
+              <h2 class="text-2xl font-semibold mb-4 text-gray-800">
+                {{ t('controls.title') }}
+              </h2>
+
+              <!-- Learning Rate Control -->
+              <div class="mb-6">
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  {{ t('controls.learningRate') }}:
+                  <span class="text-blue-600 font-bold"
+                    >{{ learningRate.toFixed(3) }}</span
+                  >
+                </label>
+                <input
+                  type="range"
+                  v-model.number="learningRate"
+                  min="0.001"
+                  max="1"
+                  step="0.001"
+                  class="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer"
+                />
+                <div class="flex justify-between text-xs text-gray-500 mt-1">
+                  <span>0.001</span>
+                  <span>0.5</span>
+                  <span>1.0</span>
+                </div>
+                <div class="mt-2 flex items-center justify-between text-xs">
+                  <span class="text-gray-600">
+                    {{ t('controls.recommended') }}: 
+                    <span class="font-semibold text-green-600">{{ recommendedLR.toFixed(3) }}</span>
+                  </span>
+                  <button 
+                    @click="learningRate = recommendedLR"
+                    class="text-xs bg-green-100 hover:bg-green-200 text-green-700 px-2 py-1 rounded"
+                  >
+                    {{ t('controls.useRecommended') }}
+                  </button>
+                </div>
+                <div 
+                  v-if="Math.abs(learningRate / recommendedLR) > 10"
+                  class="mt-2 p-2 bg-yellow-50 border border-yellow-200 rounded text-xs text-yellow-800"
+                >
+                  ⚠️ {{ t('controls.learningRateWarning') }}
+                </div>
+              </div>
+
+              <!-- Function Selection -->
+              <div class="mb-6">
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >{{ t('controls.costFunction') }}</label
+                >
+                <select
+                  v-model="selectedFunction"
+                  @change="reset"
+                  class="w-full p-2 border border-gray-300 rounded-lg"
+                >
+                  <option value="quadratic">
+                    {{ t('functions.quadratic') }}
+                  </option>
+                  <option value="complex">{{ t('functions.complex') }}</option>
+                  <option value="localMinima">
+                    {{ t('functions.localMinima') }}
+                  </option>
+                  <option value="steepValley">
+                    {{ t('functions.steepValley') }}
+                  </option>
+                  <option value="ravine">{{ t('functions.ravine') }}</option>
+                  <option value="saddle">{{ t('functions.saddle') }}</option>
+                  <option value="rosenbrock">
+                    {{ t('functions.rosenbrock') }}
+                  </option>
+                  <option value="beale">{{ t('functions.beale') }}</option>
+                </select>
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="grid grid-cols-2 gap-3 mb-6">
+                <button
+                  @click="step"
+                  :disabled="isConverged || isPlaying"
+                  class="bg-blue-500 hover:bg-blue-600 disabled:bg-gray-300 text-white font-semibold py-2 px-4 rounded-lg transition"
+                >
+                  {{ t('controls.step') }}
+                </button>
+                <button
+                  @click="togglePlay"
+                  :disabled="isConverged"
+                  :class="isPlaying ? 'bg-red-500 hover:bg-red-600' : 'bg-green-500 hover:bg-green-600'"
+                  class="disabled:bg-gray-300 text-white font-semibold py-2 px-4 rounded-lg transition"
+                >
+                  {{ isPlaying ? t('controls.pause') : t('controls.play') }}
+                </button>
+                <button
+                  @click="runSteps(10)"
+                  :disabled="isConverged || isPlaying"
+                  class="bg-indigo-500 hover:bg-indigo-600 disabled:bg-gray-300 text-white font-semibold py-2 px-4 rounded-lg transition"
+                >
+                  {{ t('controls.tenSteps') }}
+                </button>
+                <button
+                  @click="reset"
+                  class="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-lg transition"
+                >
+                  {{ t('controls.reset') }}
+                </button>
+              </div>
+
+              <!-- Statistics -->
+              <div class="bg-gray-50 rounded-lg p-4 space-y-2">
+                <h3 class="font-semibold text-gray-800 mb-3">
+                  {{ t('statistics.title') }}
+                </h3>
+                <div class="flex justify-between text-sm">
+                  <span class="text-gray-600"
+                    >{{ t('statistics.iterations') }}:</span
+                  >
+                  <span class="font-mono font-semibold">{{ iteration }}</span>
+                </div>
+                <div class="flex justify-between text-sm">
+                  <span class="text-gray-600"
+                    >{{ t('statistics.positionX') }}:</span
+                  >
+                  <span class="font-mono font-semibold"
+                    >{{ currentX.toFixed(4) }}</span
+                  >
+                </div>
+                <div
+                  v-if="['ravine', 'saddle', 'rosenbrock', 'beale'].includes(selectedFunction)"
+                  class="flex justify-between text-sm"
+                >
+                  <span class="text-gray-600"
+                    >{{ t('statistics.positionY') }}:</span
+                  >
+                  <span class="font-mono font-semibold"
+                    >{{ currentY.toFixed(4) }}</span
+                  >
+                </div>
+                <div class="flex justify-between text-sm">
+                  <span class="text-gray-600">{{ t('statistics.loss') }}:</span>
+                  <span class="font-mono font-semibold"
+                    >{{ currentLoss.toFixed(6) }}</span
+                  >
+                </div>
+                <div class="flex justify-between text-sm">
+                  <span class="text-gray-600"
+                    >{{ t('statistics.gradient') }}:</span
+                  >
+                  <span class="font-mono font-semibold"
+                    >{{ currentGradient.toFixed(4) }}</span
+                  >
+                </div>
+                <div
+                  v-if="isConverged"
+                  class="mt-3 p-2 bg-green-100 border border-green-300 rounded text-green-700 text-sm text-center"
+                >
+                  ✓ {{ t('statistics.converged') }}
+                </div>
+                <div
+                  v-if="isDiverged"
+                  class="mt-3 p-2 bg-red-100 border border-red-300 rounded text-red-700 text-sm text-center"
+                >
+                  ✗ {{ t('statistics.diverged') }}
+                </div>
+              </div>
+
+              <!-- Quick Presets -->
+              <div class="mt-6">
+                <h3 class="font-semibold text-gray-800 mb-3">
+                  {{ t('presets.title') }}
+                </h3>
+                <div class="grid grid-cols-2 gap-2">
+                  <button
+                    @click="setLearningRate(0.01)"
+                    class="text-xs bg-purple-100 hover:bg-purple-200 text-purple-800 py-2 px-2 rounded"
+                  >
+                    {{ t('presets.slow') }}<br />0.01
+                  </button>
+                  <button
+                    @click="setLearningRate(0.1)"
+                    class="text-xs bg-blue-100 hover:bg-blue-200 text-blue-800 py-2 px-2 rounded"
+                  >
+                    {{ t('presets.good') }}<br />0.1
+                  </button>
+                  <button
+                    @click="setLearningRate(0.5)"
+                    class="text-xs bg-orange-100 hover:bg-orange-200 text-orange-800 py-2 px-2 rounded"
+                  >
+                    {{ t('presets.fast') }}<br />0.5
+                  </button>
+                  <button
+                    @click="learningRate = recommendedLR"
+                    class="text-xs bg-green-100 hover:bg-green-200 text-green-800 py-2 px-2 rounded font-semibold"
+                  >
+                    {{ t('presets.recommended') }}<br />{{ recommendedLR.toFixed(3) }}
+                  </button>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Visualization Panel -->
+          <div class="lg:col-span-2">
+            <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+              <h2 class="text-2xl font-semibold mb-4 text-gray-800">
+                {{ t('charts.mainChart') }}
+              </h2>
+              <div class="relative" style="height: 400px">
+                <canvas ref="mainChart" v-show="!is2DFunction"></canvas>
+                <div
+                  ref="plot3D"
+                  v-show="is2DFunction"
+                  style="width: 100%; height: 100%"
+                ></div>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-lg p-6">
+              <h2 class="text-2xl font-semibold mb-4 text-gray-800">
+                {{ t('charts.lossChart') }}
+              </h2>
+              <div class="relative" style="height: 300px">
+                <canvas ref="lossChart"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Information Panel -->
+        <div class="mt-8 bg-white rounded-lg shadow-lg p-6">
+          <h2 class="text-2xl font-semibold mb-4 text-gray-800">
+            {{ t('info.title') }}
+          </h2>
+          <div
+            class="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm text-gray-700"
+          >
+            <div class="border-l-4 border-purple-500 pl-4">
+              <h3 class="font-semibold text-purple-700 mb-2">
+                {{ t('info.tooLow.title') }}
+              </h3>
+              <p>{{ t('info.tooLow.desc') }}</p>
+            </div>
+            <div class="border-l-4 border-green-500 pl-4">
+              <h3 class="font-semibold text-green-700 mb-2">
+                {{ t('info.optimal.title') }}
+              </h3>
+              <p>{{ t('info.optimal.desc') }}</p>
+            </div>
+            <div class="border-l-4 border-red-500 pl-4">
+              <h3 class="font-semibold text-red-700 mb-2">
+                {{ t('info.tooHigh.title') }}
+              </h3>
+              <p>{{ t('info.tooHigh.desc') }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Check if Chart.js is loaded
+      if (typeof Chart === "undefined") {
+        console.error("Chart.js failed to load");
+      } else {
+        console.log("Chart.js loaded successfully", Chart.version);
+      }
+
+      const { createApp, markRaw, toRaw } = Vue;
+      const { createI18n } = VueI18n;
+
+      // i18n translations
+      const messages = {
+        en: {
+          title: "Gradient Descent Learning Rate Demo",
+          subtitle: "Visualize how different learning rates affect convergence",
+          controls: {
+            title: "Controls",
+            learningRate: "Learning Rate",
+            costFunction: "Cost Function",
+            step: "Step",
+            play: "Play",
+            pause: "Pause",
+            tenSteps: "10 Steps",
+            reset: "Reset",
+            recommended: "Recommended",
+            useRecommended: "Use",
+            learningRateWarning: "Learning rate may be too high/low for this function",
+          },
+          functions: {
+            quadratic: "Quadratic: f(x) = x²",
+            complex: "Complex: f(x) = x² + 0.5sin(4x)",
+            localMinima: "Local Minima: f(x) = x⁴ - 3x³ + 2x",
+            steepValley: "Steep Valley: f(x) = x⁴/100 - x²",
+            ravine: "Ravine: f(x,y) = x²/2 + 10y²",
+            saddle: "Saddle Point: f(x,y) = x² - y²",
+            rosenbrock: "Rosenbrock: f(x,y) = (1-x)² + 100(y-x²)²",
+            beale:
+              "Beale: f(x,y) = (1.5-x+xy)² + (2.25-x+xy²)² + (2.625-x+xy³)²",
+          },
+          statistics: {
+            title: "Statistics",
+            iterations: "Iterations",
+            positionX: "Position (x)",
+            positionY: "Position (y)",
+            loss: "Loss",
+            gradient: "Gradient",
+            converged: "Converged!",
+            diverged: "Diverged!",
+          },
+          presets: {
+            title: "Quick Presets",
+            slow: "Slow",
+            good: "Good",
+            fast: "Fast",
+            recommended: "Best",
+          },
+          charts: {
+            mainChart: "Function & Gradient Descent Path",
+            lossChart: "Loss Over Iterations",
+          },
+          info: {
+            title: "About Learning Rate",
+            tooLow: {
+              title: "Too Low (< 0.05)",
+              desc: "Convergence is very slow. The algorithm takes many iterations to reach the minimum, but the path is stable.",
+            },
+            optimal: {
+              title: "Optimal (0.05 - 0.3)",
+              desc: "Good balance between speed and stability. Converges efficiently without overshooting the minimum.",
+            },
+            tooHigh: {
+              title: "Too High (> 0.5)",
+              desc: "May overshoot the minimum or diverge. The algorithm becomes unstable and might not converge at all.",
+            },
+          },
+        },
+        km: {
+          title: "គំរូអត្រាសិក្សាការធ្លាក់ជម្រាលដោយកម្រិត",
+          subtitle:
+            "មើលឃើញពីរបៀបដែលអត្រាសិក្សាផ្សេងៗប៉ះពាល់ដល់ការធ្វើឱ្យប្រមូលផ្តុំ",
+          controls: {
+            title: "ការគ្រប់គ្រង",
+            learningRate: "អត្រាសិក្សា",
+            costFunction: "អនុគមន៍តម្លៃ",
+            step: "ជំហាន",
+            play: "ដំណើរការ",
+            pause: "ផ្អាក",
+            tenSteps: "១០ ជំហាន",
+            reset: "កំណត់ឡើងវិញ",
+            recommended: "ណែនាំ",
+            useRecommended: "ប្រើ",
+            learningRateWarning: "អត្រាសិក្សាអាចខ្ពស់/ទាបពេកសម្រាប់អនុគមន៍នេះ",
+          },
+          functions: {
+            quadratic: "ការ៉េក្វាដ្រាទិក: f(x) = x²",
+            complex: "កុំផ្លិច: f(x) = x² + 0.5sin(4x)",
+            localMinima: "អប្បបរមាមូលដ្ឋាន: f(x) = x⁴ - 3x³ + 2x",
+            steepValley: "ជ្រលងធំ: f(x) = x⁴/100 - x²",
+            ravine: "រ៉ាវីន: f(x,y) = x²/2 + 10y²",
+            saddle: "ចំណុចស្នែង: f(x,y) = x² - y²",
+            rosenbrock: "រ៉ូសិនប្រុក: f(x,y) = (1-x)² + 100(y-x²)²",
+            beale:
+              "ប៊ីល: f(x,y) = (1.5-x+xy)² + (2.25-x+xy²)² + (2.625-x+xy³)²",
+          },
+          statistics: {
+            title: "ស្ថិតិ",
+            iterations: "ចំនួនដងធ្វើម្តងទៀត",
+            positionX: "ទីតាំង (x)",
+            positionY: "ទីតាំង (y)",
+            loss: "ការបាត់បង់",
+            gradient: "ជម្រាល",
+            converged: "បានប្រមូលផ្តុំ!",
+            diverged: "បានបែកខ្ញែក!",
+          },
+          presets: {
+            title: "ការកំណត់រហ័ស",
+            slow: "យឺត",
+            good: "ល្អ",
+            fast: "លឿន",
+            recommended: "ល្អបំផុត",
+          },
+          charts: {
+            mainChart: "អនុគមន៍និងផ្លូវការធ្លាក់ជម្រាល",
+            lossChart: "ការបាត់បង់តាមការធ្វើម្តងទៀត",
+          },
+          info: {
+            title: "អំពីអត្រាសិក្សា",
+            tooLow: {
+              title: "ទាបពេក (< 0.05)",
+              desc: "ការប្រមូលផ្តុំយឺតណាស់។ ក្បួនដោះស្រាយត្រូវការការធ្វើម្តងទៀតច្រើនដើម្បីឈានដល់អប្បបរមា ប៉ុន្តែផ្លូវមានស្ថេរភាព។",
+            },
+            optimal: {
+              title: "ល្អបំផុត (0.05 - 0.3)",
+              desc: "តុល្យភាពល្អរវាងល្បឿននិងស្ថេរភាព។ ធ្វើឱ្យប្រមូលផ្តុំយ៉ាងមានប្រសិទ្ធភាពដោយមិនលើសពីអប្បបរមា។",
+            },
+            tooHigh: {
+              title: "ខ្ពស់ពេក (> 0.5)",
+              desc: "អាចលើសពីអប្បបរមា ឬបែកខ្ញែក។ ក្បួនដោះស្រាយក្លាយជាមិនមានស្ថេរភាពហើយអាចនឹងមិនប្រមូលផ្តុំទេ។",
+            },
+          },
+        },
+      };
+
+      const i18n = createI18n({
+        locale: "en",
+        fallbackLocale: "en",
+        messages,
+        legacy: false,
+      });
+
+      const app = createApp({
+        data() {
+          return {
+            learningRate: 0.1,
+            selectedFunction: "quadratic",
+            currentX: 5,
+            currentY: 3,
+            iteration: 0,
+            history: [],
+            lossHistory: [],
+            isPlaying: false,
+            playInterval: null,
+            mainChart: null,
+            lossChart: null,
+            convergenceThreshold: 0.0001,
+            maxIterations: 1000,
+            // Recommended learning rates for each function
+            recommendedLearningRates: {
+              quadratic: 0.1,
+              complex: 0.1,
+              localMinima: 0.05,
+              steepValley: 0.1,
+              ravine: 0.05,
+              saddle: 0.1,
+              rosenbrock: 0.001,
+              beale: 0.001,
+            },
+            useGradientClipping: true,
+            maxGradientNorm: 10.0,
+          };
+        },
+        computed: {
+          currentLoss() {
+            return this.computeLoss(this.currentX, this.currentY);
+          },
+          currentGradient() {
+            const is2D = ["ravine", "saddle", "rosenbrock", "beale"].includes(
+              this.selectedFunction,
+            );
+            if (is2D) {
+              const [gx, gy] = this.computeGradient(
+                this.currentX,
+                this.currentY,
+              );
+              return Math.sqrt(gx * gx + gy * gy);
+            }
+            return Math.abs(this.computeGradient(this.currentX, this.currentY));
+          },
+          isConverged() {
+            return (
+              Math.abs(this.currentGradient) < this.convergenceThreshold ||
+              this.iteration >= this.maxIterations
+            );
+          },
+          isDiverged() {
+            return (
+              Math.abs(this.currentX) > 50 ||
+              Math.abs(this.currentY) > 50 ||
+              Math.abs(this.currentLoss) > 1000
+            );
+          },
+          currentLocale() {
+            return this.$i18n.locale;
+          },
+          t() {
+            return this.$t;
+          },
+          is2DFunction() {
+            return ["ravine", "saddle", "rosenbrock", "beale"].includes(
+              this.selectedFunction,
+            );
+          },
+          recommendedLR() {
+            return this.recommendedLearningRates[this.selectedFunction] || 0.1;
+          },
+        },
+        watch: {
+          currentLocale(newLocale) {
+            document.documentElement.lang = newLocale;
+          },
+          async selectedFunction(newFunc, oldFunc) {
+            // Auto-adjust learning rate if it's wildly inappropriate
+            const recommended = this.recommendedLearningRates[newFunc];
+            if (recommended && Math.abs(this.learningRate / recommended) > 50) {
+              // Learning rate is way off, auto-adjust
+              this.learningRate = recommended;
+            }
+            
+            // Check if we're switching between 1D and 2D functions
+            const was2D = ["ravine", "saddle", "rosenbrock", "beale"].includes(
+              oldFunc,
+            );
+            const is2D = ["ravine", "saddle", "rosenbrock", "beale"].includes(
+              newFunc,
+            );
+
+            if (was2D !== is2D) {
+              // Switching between 1D and 2D, need to reinitialize
+              await this.$nextTick();
+              if (is2D) {
+                // Destroy 2D chart if it exists
+                if (this.mainChart) {
+                  this.mainChart.destroy();
+                  this.mainChart = null;
+                }
+              } else {
+                // Switched to 1D, need to create 2D chart
+                if (this.$refs.mainChart) {
+                  const mainCtx = this.$refs.mainChart.getContext("2d");
+                  this.mainChart = markRaw(
+                    new Chart(mainCtx, {
+                      type: "line",
+                      data: { datasets: [] },
+                      options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                          x: {
+                            type: "linear",
+                            title: { display: true, text: "x" },
+                          },
+                          y: {
+                            type: "linear",
+                            title: { display: true, text: "f(x)" },
+                          },
+                        },
+                        plugins: {
+                          legend: { display: true },
+                          tooltip: { mode: "nearest", intersect: false },
+                        },
+                        animation: { duration: 200 },
+                      },
+                    }),
+                  );
+                }
+              }
+            }
+          },
+        },
+        async mounted() {
+          // Set initial language
+          document.documentElement.lang = this.currentLocale;
+
+          // Initialize history with starting position
+          const initialLoss = this.computeLoss(this.currentX, this.currentY);
+          this.history = [
+            { x: this.currentX, y: this.currentY, loss: initialLoss },
+          ];
+          this.lossHistory = [initialLoss];
+
+          // Wait for next tick to ensure canvas elements are rendered
+          await this.$nextTick();
+
+          try {
+            this.initCharts();
+            this.updateCharts();
+          } catch (error) {
+            console.error("Error initializing charts:", error);
+          }
+        },
+        methods: {
+          toggleLanguage() {
+            this.$i18n.locale = this.$i18n.locale === "en" ? "km" : "en";
+          },
+          computeLoss(x, y = 0) {
+            switch (this.selectedFunction) {
+              case "quadratic":
+                return x * x;
+              case "complex":
+                return x * x + 0.5 * Math.sin(4 * x);
+              case "localMinima":
+                return x * x * x * x - 3 * x * x * x + 2 * x;
+              case "steepValley":
+                return (x * x * x * x) / 100 - x * x;
+              case "ravine":
+                return (x * x) / 2 + 10 * y * y;
+              case "saddle":
+                return x * x - y * y;
+              case "rosenbrock":
+                return Math.pow(1 - x, 2) + 100 * Math.pow(y - x * x, 2);
+              case "beale":
+                return (
+                  Math.pow(1.5 - x + x * y, 2) +
+                  Math.pow(2.25 - x + x * y * y, 2) +
+                  Math.pow(2.625 - x + x * y * y * y, 2)
+                );
+              default:
+                return x * x;
+            }
+          },
+          computeGradient(x, y = 0) {
+            const h = 0.0001;
+            switch (this.selectedFunction) {
+              case "quadratic":
+                return 2 * x;
+              case "complex":
+                return 2 * x + 2 * Math.cos(4 * x);
+              case "localMinima":
+                return 4 * x * x * x - 9 * x * x + 2;
+              case "steepValley":
+                return (4 * x * x * x) / 100 - 2 * x;
+              case "ravine":
+                return [x, 20 * y];
+              case "saddle":
+                return [2 * x, -2 * y];
+              case "rosenbrock":
+                const gx = -2 * (1 - x) - 400 * x * (y - x * x);
+                const gy = 200 * (y - x * x);
+                return [gx, gy];
+              case "beale":
+                const bx =
+                  2 * (1.5 - x + x * y) * (-1 + y) +
+                  2 * (2.25 - x + x * y * y) * (-1 + y * y) +
+                  2 * (2.625 - x + x * y * y * y) * (-1 + y * y * y);
+                const by =
+                  2 * (1.5 - x + x * y) * x +
+                  2 * (2.25 - x + x * y * y) * (2 * x * y) +
+                  2 * (2.625 - x + x * y * y * y) * (3 * x * y * y);
+                return [bx, by];
+              default:
+                return 2 * x;
+            }
+          },
+          step() {
+            if (this.isConverged || this.isDiverged) return;
+
+            const is2D = ["ravine", "saddle", "rosenbrock", "beale"].includes(
+              this.selectedFunction,
+            );
+            
+            let gx, gy;
+            if (is2D) {
+              [gx, gy] = this.computeGradient(
+                this.currentX,
+                this.currentY,
+              );
+              
+              // Apply gradient clipping if enabled
+              if (this.useGradientClipping) {
+                const gradNorm = Math.sqrt(gx * gx + gy * gy);
+                if (gradNorm > this.maxGradientNorm) {
+                  const scale = this.maxGradientNorm / gradNorm;
+                  gx *= scale;
+                  gy *= scale;
+                }
+              }
+              
+              this.currentX -= this.learningRate * gx;
+              this.currentY -= this.learningRate * gy;
+            } else {
+              gx = this.computeGradient(this.currentX);
+              
+              // Apply gradient clipping for 1D
+              if (this.useGradientClipping) {
+                const gradNorm = Math.abs(gx);
+                if (gradNorm > this.maxGradientNorm) {
+                  gx = (gx / gradNorm) * this.maxGradientNorm;
+                }
+              }
+              
+              this.currentX -= this.learningRate * gx;
+            }
+
+            this.iteration++;
+            this.history.push({
+              x: this.currentX,
+              y: this.currentY,
+              loss: this.currentLoss,
+            });
+            this.lossHistory.push(this.currentLoss);
+            this.updateCharts();
+
+            if (this.isConverged || this.isDiverged) {
+              this.stopPlay();
+            }
+          },
+          runSteps(n) {
+            for (
+              let i = 0;
+              i < n && !this.isConverged && !this.isDiverged;
+              i++
+            ) {
+              this.step();
+            }
+          },
+          togglePlay() {
+            if (this.isPlaying) {
+              this.stopPlay();
+            } else {
+              this.startPlay();
+            }
+          },
+          startPlay() {
+            this.isPlaying = true;
+            this.playInterval = setInterval(() => {
+              this.step();
+            }, 100);
+          },
+          stopPlay() {
+            this.isPlaying = false;
+            if (this.playInterval) {
+              clearInterval(this.playInterval);
+              this.playInterval = null;
+            }
+          },
+          reset() {
+            this.stopPlay();
+            // Set initial positions based on function type
+            const initialPositions = {
+              quadratic: { x: 5, y: 0 },
+              complex: { x: 5, y: 0 },
+              localMinima: { x: 3, y: 0 },
+              steepValley: { x: 3, y: 0 },
+              ravine: { x: 5, y: 3 },
+              saddle: { x: 3, y: 3 },
+              rosenbrock: { x: -1.5, y: 2.5 },
+              beale: { x: 1, y: 1 },
+            };
+            const pos = initialPositions[this.selectedFunction] || {
+              x: 5,
+              y: 0,
+            };
+            this.currentX = pos.x;
+            this.currentY = pos.y;
+            this.iteration = 0;
+            this.history = [
+              { x: this.currentX, y: this.currentY, loss: this.currentLoss },
+            ];
+            this.lossHistory = [this.currentLoss];
+            this.updateCharts();
+          },
+          setLearningRate(rate) {
+            this.learningRate = rate;
+            this.reset();
+          },
+          initCharts() {
+            console.log("initCharts called");
+            console.log("mainChart ref:", this.$refs.mainChart);
+            console.log("plot3D ref:", this.$refs.plot3D);
+            console.log("lossChart ref:", this.$refs.lossChart);
+
+            // Check if elements exist
+            if (!this.$refs.lossChart) {
+              console.error("Canvas refs not found");
+              return;
+            }
+
+            console.log("Creating charts...");
+
+            // Main chart (function visualization) - only for 1D functions
+            if (!this.is2DFunction && this.$refs.mainChart) {
+              const mainCtx = this.$refs.mainChart.getContext("2d");
+              this.mainChart = markRaw(
+                new Chart(mainCtx, {
+                  type: "line",
+                  data: {
+                    datasets: [],
+                  },
+                  options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                      x: {
+                        type: "linear",
+                        title: {
+                          display: true,
+                          text: "x",
+                        },
+                      },
+                      y: {
+                        type: "linear",
+                        title: {
+                          display: true,
+                          text: "f(x)",
+                        },
+                      },
+                    },
+                    plugins: {
+                      legend: {
+                        display: true,
+                      },
+                      tooltip: {
+                        mode: "nearest",
+                        intersect: false,
+                      },
+                    },
+                    animation: {
+                      duration: 200,
+                    },
+                  },
+                }),
+              );
+            }
+
+            // Loss chart
+            const lossCtx = this.$refs.lossChart.getContext("2d");
+            this.lossChart = markRaw(
+              new Chart(lossCtx, {
+                type: "line",
+                data: {
+                  labels: [0],
+                  datasets: [
+                    {
+                      label: "Loss",
+                      data: [this.currentLoss],
+                      borderColor: "rgb(59, 130, 246)",
+                      backgroundColor: "rgba(59, 130, 246, 0.1)",
+                      tension: 0.4,
+                      fill: true,
+                    },
+                  ],
+                },
+                options: {
+                  responsive: true,
+                  maintainAspectRatio: false,
+                  scales: {
+                    x: {
+                      title: {
+                        display: true,
+                        text: "Iteration",
+                      },
+                    },
+                    y: {
+                      title: {
+                        display: true,
+                        text: "Loss",
+                      },
+                      beginAtZero: true,
+                    },
+                  },
+                  plugins: {
+                    legend: {
+                      display: false,
+                    },
+                  },
+                  animation: {
+                    duration: 200,
+                  },
+                },
+              }),
+            );
+
+            console.log("Charts created successfully");
+            console.log("mainChart:", this.mainChart);
+            console.log("lossChart:", this.lossChart);
+          },
+          updateCharts() {
+            if (this.is2DFunction) {
+              this.update3DPlot();
+            } else {
+              this.update2DChart();
+            }
+            this.updateLossChart();
+          },
+
+          update2DChart() {
+            // Check if chart is initialized
+            if (!this.mainChart) {
+              console.error("Chart not initialized");
+              return;
+            }
+
+            // Update main chart
+            const rangeConfig = {
+              quadratic: { min: -10, max: 10, points: 200 },
+              complex: { min: -10, max: 10, points: 200 },
+              localMinima: { min: -2, max: 4, points: 200 },
+              steepValley: { min: -3, max: 3, points: 200 },
+            };
+            const config = rangeConfig[this.selectedFunction] || {
+              min: -10,
+              max: 10,
+              points: 200,
+            };
+            const xRange = Array.from(
+              { length: config.points },
+              (_, i) =>
+                config.min +
+                (i * (config.max - config.min)) / (config.points - 1),
+            );
+
+            const functionData = xRange.map((x) => ({
+              x: x,
+              y: this.computeLoss(x, 0),
+            }));
+
+            // Convert reactive history to plain array
+            const rawHistory = toRaw(this.history);
+            const pathData = rawHistory.map((point) => ({
+              x: point.x,
+              y: point.loss,
+            }));
+
+            this.mainChart.data.datasets = [
+              {
+                label: "Cost Function",
+                data: functionData,
+                borderColor: "rgb(156, 163, 175)",
+                backgroundColor: "rgba(156, 163, 175, 0.1)",
+                borderWidth: 2,
+                pointRadius: 0,
+                fill: false,
+              },
+              {
+                label: "Gradient Descent Path",
+                data: pathData,
+                borderColor: "rgb(239, 68, 68)",
+                backgroundColor: "rgba(239, 68, 68, 0.8)",
+                borderWidth: 2,
+                pointRadius: 4,
+                pointHoverRadius: 6,
+                showLine: true,
+                tension: 0,
+              },
+              {
+                label: "Current Position",
+                data: [{ x: this.currentX, y: this.currentLoss }],
+                borderColor: "rgb(34, 197, 94)",
+                backgroundColor: "rgb(34, 197, 94)",
+                pointRadius: 8,
+                pointHoverRadius: 10,
+                showLine: false,
+              },
+            ];
+            this.mainChart.update();
+          },
+
+          update3DPlot() {
+            if (!this.$refs.plot3D) {
+              console.error("3D plot container not found");
+              return;
+            }
+
+            // Define range for each function
+            const rangeConfig = {
+              ravine: { min: -6, max: 6, points: 50 },
+              saddle: { min: -5, max: 5, points: 50 },
+              rosenbrock: { min: -2, max: 2, points: 50 },
+              beale: { min: -4.5, max: 4.5, points: 50 },
+            };
+            const plotConfig = rangeConfig[this.selectedFunction] || {
+              min: -5,
+              max: 5,
+              points: 50,
+            };
+
+            // Create mesh grid
+            const xRange = Array.from(
+              { length: plotConfig.points },
+              (_, i) =>
+                plotConfig.min +
+                (i * (plotConfig.max - plotConfig.min)) /
+                  (plotConfig.points - 1),
+            );
+            const yRange = Array.from(
+              { length: plotConfig.points },
+              (_, i) =>
+                plotConfig.min +
+                (i * (plotConfig.max - plotConfig.min)) /
+                  (plotConfig.points - 1),
+            );
+
+            // Compute Z values for surface
+            const zData = yRange.map((y) =>
+              xRange.map((x) => this.computeLoss(x, y)),
+            );
+
+            // Get path data
+            const rawHistory = toRaw(this.history);
+            const pathX = rawHistory.map((p) => p.x);
+            const pathY = rawHistory.map((p) => p.y);
+            const pathZ = rawHistory.map((p) => p.loss);
+
+            // Create the surface trace
+            const surfaceTrace = {
+              type: "surface",
+              x: xRange,
+              y: yRange,
+              z: zData,
+              colorscale: "Viridis",
+              opacity: 0.8,
+              showscale: true,
+              name: "Cost Function",
+            };
+
+            // Create the path trace
+            const pathTrace = {
+              type: "scatter3d",
+              mode: "lines+markers",
+              x: pathX,
+              y: pathY,
+              z: pathZ,
+              line: {
+                color: "red",
+                width: 4,
+              },
+              marker: {
+                size: 4,
+                color: "red",
+              },
+              name: "Gradient Descent Path",
+            };
+
+            // Create the current position marker
+            const currentPosTrace = {
+              type: "scatter3d",
+              mode: "markers",
+              x: [this.currentX],
+              y: [this.currentY],
+              z: [this.currentLoss],
+              marker: {
+                size: 10,
+                color: "lime",
+                symbol: "circle",
+              },
+              name: "Current Position",
+            };
+
+            const layout = {
+              scene: {
+                xaxis: { title: "x" },
+                yaxis: { title: "y" },
+                zaxis: { title: "f(x,y)" },
+                camera: {
+                  eye: { x: 1.5, y: 1.5, z: 1.3 },
+                },
+              },
+              margin: { l: 0, r: 0, t: 0, b: 0 },
+              showlegend: true,
+              legend: { x: 0, y: 1 },
+            };
+
+            const plotlyConfig = {
+              responsive: true,
+              displayModeBar: true,
+              displaylogo: false,
+            };
+
+            Plotly.newPlot(
+              this.$refs.plot3D,
+              [surfaceTrace, pathTrace, currentPosTrace],
+              layout,
+              plotlyConfig,
+            );
+          },
+
+          updateLossChart() {
+            if (!this.lossChart) {
+              console.error("Loss chart not initialized");
+              return;
+            }
+
+            // Update loss chart - convert reactive array to plain array
+            const rawLossHistory = toRaw(this.lossHistory);
+            this.lossChart.data.labels = Array.from(
+              { length: rawLossHistory.length },
+              (_, i) => i,
+            );
+            this.lossChart.data.datasets[0].data = [...rawLossHistory];
+            this.lossChart.update();
+          },
+        },
+      });
+
+      app.use(i18n);
+      app.mount("#app");
+    </script>
+  </body>
+</html>

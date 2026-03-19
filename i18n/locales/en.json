@@ -1,0 +1,91 @@
+{
+  "welcome": "Welcome",
+  "english": "English",
+  "khmer": "Khmer",
+  "hero": {
+    "title": "AI & ML Playroom",
+    "subtitle": "Interactive explorations of artificial intelligence and machine learning concepts. Dive deep into the mathematics and intuition behind the algorithms.",
+    "exploreButton": "Explore Rooms"
+  },
+  "rooms": {
+    "title": "Explore Interactive Rooms",
+    "subtitle": "Each room is a deep dive into a fundamental concept in AI and machine learning, complete with interactive visualizations and comprehensive mathematical explanations.",
+    "exploreLink": "Explore",
+    "gradientDescent": {
+      "title": "Gradient Descent",
+      "description": "Explore the fundamental optimization algorithm that powers machine learning. Understand how it finds the minimum of a function step by step."
+    }
+  },
+  "footer": {
+    "title": "AI & ML Playroom",
+    "subtitle": "Built with curiosity and mathematics"
+  },
+  "room": {
+    "backToRooms": "Back to Rooms",
+    "backToAllRooms": "Back to All Rooms",
+    "shareThis": "Share this"
+  },
+  "interactiveDemo": {
+    "title": "Gradient Descent Learning Rate Demo",
+    "subtitle": "Visualize how different learning rates affect convergence",
+    "controls": {
+      "title": "Controls",
+      "learningRate": "Learning Rate",
+      "costFunction": "Cost Function",
+      "step": "Step",
+      "play": "Play",
+      "pause": "Pause",
+      "tenSteps": "10 Steps",
+      "reset": "Reset",
+      "recommended": "Recommended",
+      "useRecommended": "Use",
+      "learningRateWarning": "Learning rate may be too high/low for this function"
+    },
+    "functions": {
+      "quadratic": "Quadratic: f(x) = x²",
+      "complex": "Complex: f(x) = x² + 0.5sin(4x)",
+      "localMinima": "Local Minima: f(x) = x⁴ - 3x³ + 2x",
+      "steepValley": "Steep Valley: f(x) = x⁴/100 - x²",
+      "ravine": "Ravine: f(x,y) = x²/2 + 10y²",
+      "saddle": "Saddle Point: f(x,y) = x² - y²",
+      "rosenbrock": "Rosenbrock: f(x,y) = (1-x)² + 100(y-x²)²",
+      "beale": "Beale: f(x,y) = (1.5-x+xy)² + (2.25-x+xy²)² + (2.625-x+xy³)²"
+    },
+    "statistics": {
+      "title": "Statistics",
+      "iterations": "Iterations",
+      "positionX": "Position (x)",
+      "positionY": "Position (y)",
+      "loss": "Loss",
+      "gradient": "Gradient",
+      "converged": "Converged!",
+      "diverged": "Diverged!"
+    },
+    "presets": {
+      "title": "Quick Presets",
+      "slow": "Slow",
+      "good": "Good",
+      "fast": "Fast",
+      "recommended": "Best"
+    },
+    "charts": {
+      "mainChart": "Function & Gradient Descent Path",
+      "lossChart": "Loss Over Iterations"
+    },
+    "info": {
+      "title": "About Learning Rate",
+      "tooLow": {
+        "title": "Too Low (< 0.05)",
+        "desc": "Convergence is very slow. The algorithm takes many iterations to reach the minimum, but the path is stable."
+      },
+      "optimal": {
+        "title": "Optimal (0.05 - 0.3)",
+        "desc": "Good balance between speed and stability. Converges efficiently without overshooting the minimum."
+      },
+      "tooHigh": {
+        "title": "Too High (> 0.5)",
+        "desc": "May overshoot the minimum or diverge. The algorithm becomes unstable and might not converge at all."
+      }
+    }
+  }
+}
