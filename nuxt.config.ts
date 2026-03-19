@@ -72,7 +72,13 @@ export default defineNuxtConfig({
     locales: [
       { code: 'en', name: 'English', file: 'en.json' },
       { code: 'km', name: 'Khmer', file: 'km.json' }
-    ]
+    ],
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: 'i18n_redirected',
+      alwaysRedirect: true,
+      fallbackLocale: 'km'
+    }
   },
   googleFonts: {
     families: {
