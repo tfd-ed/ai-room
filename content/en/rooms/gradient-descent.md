@@ -238,7 +238,12 @@ In deep learning:
 
 During **training**, the process is:
 $$
-\text{Forward Pass} \rightarrow \text{Compute Loss } J(\theta) \rightarrow \text{Backpropagation} \rightarrow \text{Gradient Descent Update}
+\begin{aligned}
+&\text{Forward Pass} \\
+&\rightarrow \text{Compute Loss } J(\theta) \\
+&\rightarrow \text{Backpropagation} \\
+&\rightarrow \text{Gradient Descent Update}
+\end{aligned}
 $$
 
 A network may have millions of neurons → millions of weights → a gradient vector with **millions of dimensions** — yet gradient descent works exactly the same way as in the 1D case: move opposite to the gradient to reduce the loss!

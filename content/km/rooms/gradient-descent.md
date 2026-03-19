@@ -238,7 +238,12 @@ Gradient descent ត្រូវបានប្រើដើម្បីបណ្
 
 ក្នុងអំឡុងពេល **Training**:
 $$
-\text{Forward Pass} \rightarrow \text{Compute Loss } J(\theta) \rightarrow \text{Backpropagation} \rightarrow \text{Gradient Descent Update}
+\begin{aligned}
+&\text{Forward Pass} \\
+&\rightarrow \text{Compute Loss } J(\theta) \\
+&\rightarrow \text{Backpropagation} \\
+&\rightarrow \text{Gradient Descent Update}
+\end{aligned}
 $$
 
 Network មួយ មាន neurons រាប់លាន → weights រាប់លាន → gradient vector មាន **រាប់លាន dimensions** — ប៉ុន្តែ Gradient Descent ដំណើរការដូចគ្នានឹង 1D ដែរ: update ក្នុងទិស opposite នៃ gradient!
