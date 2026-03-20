@@ -114,6 +114,17 @@ useSeoMeta({
                                         month: 'long', day: 'numeric'
                                     }) }}
                                 </p>
+                                <p class="text-xs text-text-secondary">
+                                    {{ $t('updatedAt') }}:
+                                    {{ new Date(page?.meta?.updatedAt).toLocaleDateString(locale.value, {
+                                        year: 'numeric',
+                                        month: 'long', day: 'numeric'
+                                    }) }}
+                                </p>
+                                <p class="text-xs text-text-secondary">
+                                    {{ $t('updateSummary') }}:
+                                    {{ page?.meta?.updateSummary }}
+                                </p>
                             </div>
                         </div>
                     </div>

@@ -1,12 +1,15 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 
 import tailwindcss from "@tailwindcss/vite";
+import { transformerCopyButton } from '@rehype-pretty/transformers'
+
+const isDev = process.env.NODE_ENV !== 'production';
 
 export default defineNuxtConfig({
   modules: [
-    '@nuxt/content',
-    '@nuxt/eslint',
     '@nuxt/ui',
+    '@nuxt/eslint',
+    '@nuxt/content',
     '@nuxtjs/google-fonts',
     '@nuxtjs/i18n',
     '@stefanobartoletti/nuxt-social-share',
@@ -44,11 +47,19 @@ export default defineNuxtConfig({
   content: {
     build: {
       markdown: {
+        highlight: {
+          // theme: 'github-dark',
+          langs: [
+            'python',
+            'sh',
+            'vue'
+          ]
+        },
         remarkPlugins: {
           'remark-math': {}
         },
         rehypePlugins: {
-          "rehype-katex": {}
+          "rehype-katex": {},
         },
       }
     }
@@ -95,13 +106,13 @@ export default defineNuxtConfig({
         '/en/rooms/gradient-descent',
       ],
     },
-    // Cache static assets and API responses
+    // Cache static assets and API responses (ISR only in production to avoid ENOTDIR in dev)
     routeRules: {
-      // Static pages - cache for 1 day, revalidate in background
-      '/': { isr: 3600, headers: { 'cache-control': 's-maxage=3600, stale-while-revalidate=86400' } },
-      '/en': { isr: 3600, headers: { 'cache-control': 's-maxage=3600, stale-while-revalidate=86400' } },
-      '/rooms/**': { isr: 3600, headers: { 'cache-control': 's-maxage=3600, stale-while-revalidate=86400' } },
-      '/en/rooms/**': { isr: 3600, headers: { 'cache-control': 's-maxage=3600, stale-while-revalidate=86400' } },
+      // Static pages - ISR + cache headers in prod; plain render in dev
+      '/': isDev ? {} : { isr: 3600, headers: { 'cache-control': 's-maxage=3600, stale-while-revalidate=86400' } },
+      '/en': isDev ? {} : { isr: 3600, headers: { 'cache-control': 's-maxage=3600, stale-while-revalidate=86400' } },
+      '/rooms/**': isDev ? {} : { isr: 3600, headers: { 'cache-control': 's-maxage=3600, stale-while-revalidate=86400' } },
+      '/en/rooms/**': isDev ? {} : { isr: 3600, headers: { 'cache-control': 's-maxage=3600, stale-while-revalidate=86400' } },
       // API - short cache
       '/api/health': { headers: { 'cache-control': 'no-store' } },
       // OG images - long cache (they rarely change)

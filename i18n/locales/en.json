@@ -2,6 +2,8 @@
   "welcome": "Welcome",
   "english": "English",
   "khmer": "Khmer",
+  "updatedAt": "Updated At",
+  "updateSummary": "Update Summary",
   "hero": {
     "title": "AI & ML Playroom",
     "subtitle": "Interactive explorations of artificial intelligence and machine learning concepts. Dive deep into the mathematics and intuition behind the algorithms.",

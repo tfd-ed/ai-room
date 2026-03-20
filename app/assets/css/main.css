@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "@nuxt/ui";
 
 @layer theme, base, components, utilities;
 @import "tailwindcss/theme.css" layer(theme);
@@ -160,11 +161,22 @@ mjx-container {
 
 .prose pre {
     background: var(--color-bg-secondary);
-    padding: 1.5rem;
+    padding: 0.65rem 1rem;
     border-radius: 0.75rem;
     overflow-x: auto;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.25rem;
     border: 1px solid var(--color-border);
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+.prose pre code {
+    background: transparent;
+    color: inherit;
+    padding: 0;
+    border-radius: 0;
+    font-size: inherit;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
 }
 
 .prose blockquote {

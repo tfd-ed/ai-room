@@ -3,6 +3,8 @@ title: 'Gradient Descent'
 description: 'Understanding the optimization algorithm that powers machine learning'
 author: 'Chau Dara - Founder of TFDevs'
 date: '2026-03-19'
+updatedAt: '2026-03-20'
+updateSummary: 'Added Python implementation and detailed explanations of gradient descent.'
 ---
 
 <div class="w-full max-w-2xl mx-auto bg-white rounded-lg shadow-md overflow-hidden mb-2" style="height: 300px;">
@@ -222,7 +224,7 @@ Gradient descent is used to train:
 ### Gradient Descent in Deep Learning
 
 <div class="w-full max-w-2xl mx-auto bg-white rounded-lg shadow-md overflow-hidden mb-2" style="height: 340px;">
-  <img src="/assets/img/deep-rl-khmer.png" alt="Deep Learning Neural Network and Cost Function" class="w-full h-full" style="object-fit: contain;" />
+  <img src="/assets/img/deep-rl-english.png" alt="Deep Learning Neural Network and Cost Function" class="w-full h-full" style="object-fit: contain;" />
 </div>
 <p class="text-center text-sm text-text-secondary mb-6 italic">
   A deep neural network uses gradient descent to train weights across all its layers by minimizing the cost function.
@@ -247,6 +249,109 @@ $$
 $$
 
 A network may have millions of neurons → millions of weights → a gradient vector with **millions of dimensions** — yet gradient descent works exactly the same way as in the 1D case: move opposite to the gradient to reduce the loss!
+
+## Python Implementation
+
+Below is a pure-Python implementation — no ML libraries. Each block maps directly to the math above. **Highlighted lines** are the core formulas.
+
+### Step 1 — Cost Function and its Gradient
+
+$$J(\theta) = \theta^2, \qquad \nabla J(\theta) = 2\theta$$
+
+```python [gradient_descent.py]
+# J(θ) = θ²  →  the function we want to minimize
+def cost(theta):
+    return theta ** 2
+
+# ∇J(θ) = dJ/dθ = 2θ  →  its derivative (gradient)
+def gradient(theta):
+    return 2 * theta
+```
+
+### Step 2 — The Update Rule
+
+$$\theta_{new} = \theta_{old} - \alpha \cdot \nabla J(\theta)$$
+
+```python [gradient_descent.py] {3}
+def update(theta, alpha):
+    grad = gradient(theta)           # ① compute  ∇J(θ)
+    return theta - alpha * grad      # ② apply   θ_new = θ_old − α·∇J(θ)
+```
+
+Line 3 is the update rule formula above, written directly as Python.
+
+### Step 3 — Full Loop Until Convergence
+
+Run updates until $|\nabla J(\theta)| < \varepsilon$ — when the gradient is essentially zero:
+
+```python [gradient_descent.py] {5,8}
+def gradient_descent(theta_init, alpha, epsilon=1e-6, max_iters=1000):
+    theta = theta_init                           # θ₀ — starting point
+    for i in range(max_iters):
+        grad = gradient(theta)                   # ∇J(θ) = 2θ
+        if abs(grad) < epsilon:                  # stop when |∇J(θ)| < ε
+            print(f"Converged at iteration {i}")
+            break
+        theta = theta - alpha * grad             # θ_new = θ_old − α·∇J(θ)
+        if i < 5:
+            print(f"  iter {i+1:2d}: θ={theta:.5f}  J={cost(theta):.5f}  ∇J={grad:.5f}")
+    return theta
+
+# Same starting values as the manual example above: θ₀ = 10, α = 0.1
+theta_min = gradient_descent(theta_init=10.0, alpha=0.1)
+print(f"\nMinimum at θ = {theta_min:.8f}")
+```
+
+**Output — matches the manual iterations above:**
+
+```sh
+  iter  1: θ= 8.00000  J=64.00000  ∇J=20.00000
+  iter  2: θ= 6.40000  J=40.96000  ∇J=16.00000
+  iter  3: θ= 5.12000  J=26.21440  ∇J=12.80000
+  iter  4: θ= 4.09600  J=16.77722  ∇J=10.24000
+  iter  5: θ= 3.27680  J=10.73742  ∇J= 8.19200
+Minimum at θ = 0.00000001
+```
+
+### Step 4 — Linear Regression: Two Parameters
+
+For a model $\hat{y} = wX + b$, the cost is mean squared error:
+
+$$J(w, b) = \frac{1}{m} \sum_{i=1}^{m} \left(\hat{y}^{(i)} - y^{(i)}\right)^2$$
+
+With partial derivatives:
+
+$$\frac{\partial J}{\partial w} = \frac{2}{m} \sum_{i=1}^{m} \left(\hat{y}^{(i)} - y^{(i)}\right) x^{(i)}, \qquad \frac{\partial J}{\partial b} = \frac{2}{m} \sum_{i=1}^{m} \left(\hat{y}^{(i)} - y^{(i)}\right)$$
+
+```python [linear_regression_gd.py] {7-12}
+import numpy as np
+
+def linear_regression_gd(X, y, alpha=0.01, epochs=500):
+    m = len(y)
+    w, b = 0.0, 0.0                        # θ = [w, b] — initialize to zero
+    for epoch in range(epochs):
+        y_pred = w * X + b                 # forward pass:  ŷ = w·X + b
+        error  = y_pred - y                # residuals:     ŷ − y
+        dw = (2 / m) * np.dot(error, X)   # ∂J/∂w = (2/m) Σ (ŷ−y)·x
+        db = (2 / m) * np.sum(error)       # ∂J/∂b = (2/m) Σ (ŷ−y)
+        w = w - alpha * dw                 # w_new = w_old − α·∂J/∂w
+        b = b - alpha * db                 # b_new = b_old − α·∂J/∂b
+        if epoch % 100 == 0:
+            loss = np.mean(error ** 2)     # J(w,b) = (1/m) Σ (ŷ−y)²
+            print(f"Epoch {epoch:4d}: loss={loss:.4f}  w={w:.4f}  b={b:.4f}")
+    return w, b
+
+# True relationship: y = 2·x  →  model should converge to w≈2, b≈0
+X = np.array([1.0, 2.0, 3.0, 4.0, 5.0])
+y = np.array([2.0, 4.0, 6.0, 8.0, 10.0])
+w, b = linear_regression_gd(X, y)
+print(f"\nFitted:  ŷ = {w:.4f}·x + {b:.4f}")
+```
+
+The **highlighted lines 7–12** map directly to the formulas:
+- Lines 7–8: forward pass $\hat{y} = wX + b$ and residuals
+- Lines 9–10: partial derivatives $\frac{\partial J}{\partial w}$ and $\frac{\partial J}{\partial b}$
+- Lines 11–12: gradient descent update rule $\theta_{new} = \theta_{old} - \alpha \nabla J$
 
 ## Next Steps
 

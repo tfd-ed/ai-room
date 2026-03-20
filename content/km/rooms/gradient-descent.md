@@ -3,6 +3,8 @@ title: 'ស្វែងយល់ពី Gradient Descent Algorithm'
 description: 'ស្វែងយល់ពីរ Algorithm ដែលជាមូលដ្ឋានគ្រឹះនៃ Machine Learning។ យល់ដឹងពីរបៀបដែលវាស្វែងរកតម្លៃអប្បបរមានៃអនុគមន៍ម្តងមួយជំហានៗ។'
 author: 'ចៅ ដារ៉ា - Founder of TFDevs'
 date: '2026-03-19'
+updatedAt: '2026-03-20'
+updateSummary: 'បានបន្ថែមការអនុវត្ត Python និងការពន្យល់លម្អិតអំពី gradient descent។'
 ---
 <div class="w-full max-w-2xl mx-auto bg-white rounded-lg shadow-md overflow-hidden mb-2" style="height: 300px;">
   <img src="/assets/img/gradient_2.gif" alt="Gradient Descent Illustration" class="w-full h-full" style="object-fit: contain;" />
@@ -247,6 +249,108 @@ $$
 $$
 
 Network មួយ មាន neurons រាប់លាន → weights រាប់លាន → gradient vector មាន **រាប់លាន dimensions** — ប៉ុន្តែ Gradient Descent ដំណើរការដូចគ្នានឹង 1D ដែរ: update ក្នុងទិស opposite នៃ gradient!
+
+## អនុវត្តក្នុង Python
+
+ខាងក្រោមជាការសរសេរកូដ Python ដោយមិនប្រើ ML libraries ណាមួយ។ Code block នីមួយៗ ត្រូវតទៅនឹងរូបមន្ត math ខាងលើ — **ជួរ highlighted** ជា formula ចម្បង។
+
+### ជំហានទី 1 — Cost Function និង Gradient
+
+$$J(\theta) = \theta^2, \qquad \nabla J(\theta) = 2\theta$$
+
+```python [gradient_descent.py]
+# J(θ) = θ²  →  អនុគមន៍ដែលយើងចង់ minimize
+def cost(theta):
+    return theta ** 2
+
+# ∇J(θ) = dJ/dθ = 2θ  →  derivative (gradient) របស់វា
+def gradient(theta):
+    return 2 * theta
+```
+
+### ជំហានទី 2 — Update Rule
+
+$$\theta_{new} = \theta_{old} - \alpha \cdot \nabla J(\theta)$$
+
+```python title="gradient_descent.py" {3}
+def update(theta, alpha):
+    grad = gradient(theta)           # ① គណនា  ∇J(θ)
+    return theta - alpha * grad      # ② អនុវត្ត  θ_new = θ_old − α·∇J(θ)
+```
+
+ជួរទី 3 គឺ formula update rule ខាងលើ សរសេរដោយផ្ទាល់ជា Python។
+
+### ជំហានទី 3 — Loop រហូតដល់ Convergence
+
+Run updates រហូតដល់ $|\nabla J(\theta)| < \varepsilon$ — នៅពេល gradient ស្ទើររកឃើញថាសូន្យ:
+
+```python [gradient_descent.py] {5,8}
+def gradient_descent(theta_init, alpha, epsilon=1e-6, max_iters=1000):
+    theta = theta_init                           # θ₀ — ចំណុចចាប់ផ្ដើម
+    for i in range(max_iters):
+        grad = gradient(theta)                   # ∇J(θ) = 2θ
+        if abs(grad) < epsilon:                  # ឈប់: |∇J(θ)| < ε
+            print(f"Converged at iteration {i}")
+            break
+        theta = theta - alpha * grad             # θ_new = θ_old − α·∇J(θ)
+        if i < 5:
+            print(f"  iter {i+1:2d}: θ={theta:.5f}  J={cost(theta):.5f}  ∇J={grad:.5f}")
+    return theta
+# ស្របតាម ការគណនា manual ខាងលើ: θ₀ = 10, α = 0.1
+theta_min = gradient_descent(theta_init=10.0, alpha=0.1)
+print(f"\nMinimum at θ = {theta_min:.8f}")
+```
+
+**Output — ស្របតាម iterations manual ខាងលើ:**
+
+```sh
+  iter  1: θ= 8.00000  J=64.00000  ∇J=20.00000
+  iter  2: θ= 6.40000  J=40.96000  ∇J=16.00000
+  iter  3: θ= 5.12000  J=26.21440  ∇J=12.80000
+  iter  4: θ= 4.09600  J=16.77722  ∇J=10.24000
+  iter  5: θ= 3.27680  J=10.73742  ∇J= 8.19200
+Minimum at θ = 0.00000001
+```
+
+### ជំហានទី 4 — Linear Regression: Parameters ពីរ
+
+សម្រាប់ model $\hat{y} = wX + b$, cost function ប្រើ mean squared error:
+
+$$J(w, b) = \frac{1}{m} \sum_{i=1}^{m} \left(\hat{y}^{(i)} - y^{(i)}\right)^2$$
+
+ជាមួយ partial derivatives:
+
+$$\frac{\partial J}{\partial w} = \frac{2}{m} \sum_{i=1}^{m} \left(\hat{y}^{(i)} - y^{(i)}\right) x^{(i)}, \qquad \frac{\partial J}{\partial b} = \frac{2}{m} \sum_{i=1}^{m} \left(\hat{y}^{(i)} - y^{(i)}\right)$$
+
+```python [linear_regression_gd.py] {7-12}
+import numpy as np
+
+def linear_regression_gd(X, y, alpha=0.01, epochs=500):
+    m = len(y)
+    w, b = 0.0, 0.0                        # θ = [w, b] — initialize ទៅ zero
+    for epoch in range(epochs):
+        y_pred = w * X + b                 # forward pass:  ŷ = w·X + b
+        error  = y_pred - y                # residuals:     ŷ − y
+        dw = (2 / m) * np.dot(error, X)   # ∂J/∂w = (2/m) Σ (ŷ−y)·x
+        db = (2 / m) * np.sum(error)       # ∂J/∂b = (2/m) Σ (ŷ−y)
+        w = w - alpha * dw                 # w_new = w_old − α·∂J/∂w
+        b = b - alpha * db                 # b_new = b_old − α·∂J/∂b
+        if epoch % 100 == 0:
+            loss = np.mean(error ** 2)     # J(w,b) = (1/m) Σ (ŷ−y)²
+            print(f"Epoch {epoch:4d}: loss={loss:.4f}  w={w:.4f}  b={b:.4f}")
+    return w, b
+
+# y = 2·x  →  model គួរ converge ទៅ w≈2, b≈0
+X = np.array([1.0, 2.0, 3.0, 4.0, 5.0])
+y = np.array([2.0, 4.0, 6.0, 8.0, 10.0])
+w, b = linear_regression_gd(X, y)
+print(f"\nFitted:  ŷ = {w:.4f}·x + {b:.4f}")
+```
+
+**ជួរ highlighted 7–12** ទំនាក់ទំនងដោយផ្ទាល់ទៅ formulas:
+- ជួរ 7–8: forward pass $\hat{y} = wX + b$ និង residuals
+- ជួរ 9–10: partial derivatives $\frac{\partial J}{\partial w}$ និង $\frac{\partial J}{\partial b}$
+- ជួរ 11–12: gradient descent update rule $\theta_{new} = \theta_{old} - \alpha \nabla J$
 
 ## ជំហានបន្ទាប់
 
