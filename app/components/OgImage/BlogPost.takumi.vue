@@ -14,8 +14,10 @@ defineProps({
     <!-- Header -->
     <div class="flex items-center justify-between">
       <div class="flex flex-col gap-1">
-        <div class="text-[26px] font-bold" style="color: rgba(255,255,255,0.92);">AI &amp; ML Playroom</div>
-        <div class="text-[18px]" style="color: rgba(255,255,255,0.45);">Interactive Learning Platform</div>
+        <div class="text-[26px] font-bold"
+          style="color: rgba(255,255,255,0.92); font-family: 'Google Sans', sans-serif;">AI &amp; ML Playroom</div>
+        <div class="text-[18px]" style="color: rgba(255,255,255,0.45); font-family: 'Google Sans', sans-serif;">
+          Interactive Learning Platform</div>
       </div>
       <!-- Accent dots echoing our orb colors -->
       <div class="flex gap-2 items-center">
@@ -35,7 +37,7 @@ defineProps({
     <div
       style="flex: 1; display: flex; flex-direction: column; justify-content: center; overflow: hidden; padding: 32px 0;">
       <h1
-        style="font-size: 72px; font-weight: 800; line-height: 1.18; margin: 0; color: white; overflow: hidden; max-height: 256px;">
+        style="font-size: 72px; font-weight: 800; line-height: 1.18; margin: 0; color: white; overflow: hidden; max-height: 256px; font-family: 'Google Sans', sans-serif;">
         {{ title }}
       </h1>
     </div>
@@ -48,8 +50,11 @@ defineProps({
           <img :src="avatar" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover;">
         </div>
         <div class="flex flex-col gap-1">
-          <span style="font-size: 28px; font-weight: 600; color: white;">{{ author }}</span>
-          <span v-if="date" style="font-size: 20px; color: rgba(255,255,255,0.45);">{{ date }}</span>
+          <span style="font-size: 28px; font-weight: 600; color: white; font-family: 'Google Sans', sans-serif;">{{
+            author }}</span>
+          <span v-if="date"
+            style="font-size: 20px; color: rgba(255,255,255,0.45); font-family: 'Google Sans', sans-serif;">{{ date
+            }}</span>
         </div>
       </div>
       <!-- TFD Logo — bottom-right corner -->
