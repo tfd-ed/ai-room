@@ -89,7 +89,7 @@ useSeoMeta({
             <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 md:px-8 py-8 sm:py-10 pb-12 md:py-16 relative z-10">
 
                 <NuxtLink :to="localePath('/')"
-                    class="inline-flex items-center gap-2 text-text-secondary no-underline text-sm sm:text-[15px] font-medium transition-all duration-300 mb-6 sm:mb-10 hover:text-text hover:gap-3 group">
+                    class="relative z-10 inline-flex items-center gap-2 text-text-secondary no-underline text-sm sm:text-[15px] font-medium transition-all duration-300 mb-6 sm:mb-10 hover:text-text hover:gap-3 group">
                     <svg class="w-5 h-5 transition-transform duration-300 group-hover:-translate-x-1" fill="none"
                         stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
@@ -97,7 +97,7 @@ useSeoMeta({
                     {{ $t('room.backToRooms') }}
                 </NuxtLink>
 
-                <div class="max-w-4xl">
+                <div class="max-w-4xl relative z-10">
                     <h1
                         class="room-title text-2xl sm:text-3xl md:text-[clamp(2rem,4vw,3.5rem)] font-bold leading-tight mb-3 sm:mb-5 tracking-tight text-text">
                         {{ page?.title }}
