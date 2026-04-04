@@ -1,7 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 
 import tailwindcss from "@tailwindcss/vite";
-import { transformerCopyButton } from '@rehype-pretty/transformers'
 
 const isDev = process.env.NODE_ENV !== 'production';
 
@@ -17,7 +16,7 @@ export default defineNuxtConfig({
     'motion-v/nuxt'
   ],
   css: ['./app/assets/css/main.css', 'katex/dist/katex.min.css'],
-  devtools: { enabled: false },
+  devtools: { enabled: true },
   compatibilityDate: "2024-09-19",
   colorMode: {
     classSuffix: '',
@@ -25,6 +24,7 @@ export default defineNuxtConfig({
     fallback: 'light'
   },
   app: {
+    pageTransition: { name: 'page', mode: 'out-in' },
     head: {
       script: [
         {
@@ -81,8 +81,8 @@ export default defineNuxtConfig({
   },
   googleFonts: {
     families: {
-      'Inter': true,
-      'Noto Serif Khmer': true,
+      // 'Inter': [400, 500, 600, 700],
+      'Google Sans': [400, 500, 600, 700, 800, 900],
     }
   },
 

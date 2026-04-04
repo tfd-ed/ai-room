@@ -16,6 +16,10 @@
     "gradientDescent": {
       "title": "Gradient Descent",
       "description": "Explore the fundamental optimization algorithm that powers machine learning. Understand how it finds the minimum of a function step by step."
+    },
+    "adamOptimizer": {
+      "title": "Adam Optimizer: GPS of AI Model Building",
+      "description": "From fixed learning rates to adaptive moments — understand how Adam adjusts step sizes per parameter to train neural networks faster and more reliably."
     }
   },
   "footer": {
@@ -88,6 +92,57 @@
         "title": "Too High (> 0.5)",
         "desc": "May overshoot the minimum or diverge. The algorithm becomes unstable and might not converge at all."
       }
+    }
+  },
+  "interactiveAdam": {
+    "note": "All four optimizers start at the same position with the same learning rate α. Watch how adaptive methods (RMSProp, Adam) handle steep gradients automatically — no manual tuning needed.",
+    "controls": {
+      "title": "Controls",
+      "learningRate": "Learning Rate (α) — shared",
+      "beta1": "Momentum Decay (β₁)",
+      "beta2": "Adaptive Scale Decay (β₂)",
+      "function": "Loss Landscape",
+      "show": "Toggle Optimizers",
+      "step": "Step",
+      "twentySteps": "20 Steps",
+      "play": "Play",
+      "pause": "Pause",
+      "reset": "Reset"
+    },
+    "functions": {
+      "ravine": "Ravine: f(x,y) = x²/2 + 10y²",
+      "rosenbrock": "Rosenbrock: f(x,y) = (1−x)² + 100(y−x²)²"
+    },
+    "stats": {
+      "title": "Current Loss",
+      "iterations": "Iterations",
+      "diverged": "Diverged!"
+    },
+    "charts": {
+      "contour": "Optimization Paths",
+      "surface": "Optimization Landscape (3D)",
+      "loss": "Loss Comparison",
+      "iteration": "Iteration"
+    },
+    "internals": {
+      "title": "Adam Internal State (x-component)",
+      "subtitle": "Trace how bias correction shrinks as t grows — the 1/(1−β^t) factor approaches 1 and vanishes",
+      "empty": "Click Step or Play to see Adam's internal state update in real time.",
+      "step": "Step",
+      "grad": "gₓ (gradient)",
+      "m": "mₓ (biased)",
+      "v": "vₓ (biased)",
+      "mhat": "m̂ₓ (corrected)",
+      "vhat": "v̂ₓ (corrected)",
+      "effectiveLR": "Eff. LR",
+      "bias1Title": "1st moment bias correction factor",
+      "bias1Early": "← Large early on, shrinks as t grows",
+      "bias1Mid": "← Settling down",
+      "bias1Late": "← Near 1× — correction negligible",
+      "bias2Title": "2nd moment bias correction factor",
+      "bias2Early": "← Very large (β₂=0.999 means slow build-up)",
+      "bias2Mid": "← Gradually normalising",
+      "bias2Late": "← Near 1×"
     }
   }
 }

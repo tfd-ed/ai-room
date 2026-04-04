@@ -16,6 +16,10 @@
     "gradientDescent": {
       "title": "ស្វែងយល់ពី Gradient Descent Algorithm",
       "description": "ស្វែងយល់ពីរ Algorithm ដែលជាមូលដ្ឋានគ្រឹះនៃ Machine Learning។ យល់ដឹងពីរបៀបដែលវាស្វែងរកតម្លៃអប្បបរមានៃអនុគមន៍ម្តងមួយជំហានៗ។"
+    },
+    "adamOptimizer": {
+      "title": "ស្វែងយល់ពី Adam Optimizer: GPS នៃការបង្កើត AI Model",
+      "description": "ពីការកំណត់ល្បឿនថេរ ទៅកាន់ការផ្លាស់ប្តូរតាមស្ថានភាព — ស្វែងយល់ពីបច្ចេកទេសនៅពីក្រោយ AI សម័យថ្មី"
     }
   },
   "footer": {
@@ -28,11 +32,11 @@
     "shareThis": "ចែករំលែកអត្ថបទនេះ"
   },
   "interactiveDemo": {
-    "title": "គំរូអត្រាសិក្សាការធ្លាក់ជម្រាលដោយកម្រិត",
-    "subtitle": "មើលឃើញពីរបៀបដែលអត្រាសិក្សាផ្សេងៗប៉ះពាល់ដល់ការធ្វើឱ្យប្រមូលផ្តុំ",
+    "title": "គំរូទំហំជំហានការធ្លាក់ជម្រាលដោយកម្រិត",
+    "subtitle": "មើលឃើញពីរបៀបដែលទំហំជំហានផ្សេងៗប៉ះពាល់ដល់ការធ្វើឱ្យប្រមូលផ្តុំ",
     "controls": {
-      "title": "សិក្សាអត្រាបោះជំហាន",
-      "learningRate": "អត្រាបោះជំហាន",
+      "title": "សិក្សាទំហំជំហាន",
+      "learningRate": "ទំហំជំហាន",
       "costFunction": "អនុគមន៍ផ្សេងៗ",
       "step": "បោះជំហាន",
       "play": "ដើរដោយស្វ័យប្រវត្តិ",
@@ -41,12 +45,12 @@
       "reset": "កំណត់ឡើងវិញ",
       "recommended": "ណែនាំ",
       "useRecommended": "ប្រើ",
-      "learningRateWarning": "អត្រាសិក្សាអាចខ្ពស់/ទាបពេកសម្រាប់អនុគមន៍នេះ"
+      "learningRateWarning": "ទំហំជំហានអាចខ្ពស់/ទាបពេកសម្រាប់អនុគមន៍នេះ"
     },
     "functions": {
       "quadratic": "សមីការដឺក្រេទី២: f(x) = x²",
       "complex": "សមីការកុំផ្លិច: f(x) = x² + 0.5sin(4x)",
-      "localMinima": "សមីការដឺក្រេទី២ មានរាងប៉ារ៉ាបូល: f(x) = x⁴ - 3x³ + 2x",
+      "localMinima": "សមីការពហុធា មានរាងប៉ារ៉ាបូល: f(x) = x⁴ - 3x³ + 2x",
       "steepValley": "សមីការជ្រលងធំ: f(x) = x⁴/100 - x²",
       "ravine": "សមីការរ៉ាវីន: f(x,y) = x²/2 + 10y²",
       "saddle": "សមីការកែបសេះ: f(x,y) = x² - y²",
@@ -75,7 +79,7 @@
       "lossChart": "Loss (កាន់តែតូចមានន័យថា កំពុងខិតជិតអប្បបរមា)"
     },
     "info": {
-      "title": "អំពីអត្រាសិក្សា",
+      "title": "អំពី ទំហំជំហាន",
       "tooLow": {
         "title": "ទាបពេក (< 0.05)",
         "desc": "ការប្រមូលផ្តុំយឺតណាស់។ ក្បួនដោះស្រាយត្រូវការការធ្វើម្តងទៀតច្រើនដើម្បីឈានដល់អប្បបរមា ប៉ុន្តែផ្លូវមានស្ថេរភាព។"
@@ -88,6 +92,57 @@
         "title": "ខ្ពស់ពេក (> 0.5)",
         "desc": "អាចលើសពីអប្បបរមា ឬបែកខ្ញែក។ ក្បួនដោះស្រាយក្លាយជាមិនមានស្ថេរភាពហើយអាចនឹងមិនប្រមូលផ្តុំទេ។"
       }
+    }
+  },
+  "interactiveAdam": {
+    "note": "Optimizer ទាំងបួននេះ ចាប់ផ្ដើមពីទីតាំង និង learning rate α ដូចគ្នា។ សំគាល់ ពីរបៀបដែល adaptive method (RMSProp, Adam) ដោះស្រាយ gradient ខ្ទង់ ដោយស្វ័យប្រវត្ត — គ្មានការ tune ដោយដៃ​ ទាល់​ ត្រូវ​ ។",
+    "controls": {
+      "title": "ការ​កំ​ណត់",
+      "learningRate": "Learning Rate (α) — រួម",
+      "beta1": "Momentum (β₁)",
+      "beta2": "Adaptive Scale (β₂)",
+      "function": "Loss Landscape",
+      "show": "Toggle Optimizer",
+      "step": "បោះជំហាន",
+      "twentySteps": "២០ វិធីជាន",
+      "play": "ដើរដោយស្វ័យប្រវត្តិ",
+      "pause": "ផ្អាក",
+      "reset": "កំណត់ឡើងវិញ"
+    },
+    "functions": {
+      "ravine": "Ravine: f(x,y) = x²/2 + 10y²",
+      "rosenbrock": "Rosenbrock: f(x,y) = (1−x)² + 100(y−x²)²"
+    },
+    "stats": {
+      "title": "ស្ថិតិ",
+      "iterations": "",
+      "diverged": "ត្រឹ​ចោ:​ Diverged!"
+    },
+    "charts": {
+      "contour": "ផ្លួវ​ Optimization",
+      "surface": "Optimization Landscape (3D)",
+      "loss": "Loss (កាន់តែតូចមានន័យថា កំពុងខិតជិតអប្បបរមា)",
+      "iteration": "ចំនួនដងធ្វើម្តងទៀត"
+    },
+    "internals": {
+      "title": "ស្ថានភាព​ខ្នាត​ក្នុង​ Adam (អ័ក្ស​ x)",
+      "subtitle": "តាមដាន​អថឹ​ការ​ bias correction អស់​ក្វា​នៅ​ពើល​ t ធ្វើ — 1/(1−β^t) ខិតត័ក​ 1",
+      "empty": "ចុច​ Step ឆើ​ Play ដើម្បី​មើល​ Adam internal state ចូល​ស្តូករស់",
+      "step": "បោះជំហាន",
+      "grad": "gₓ (gradient)",
+      "m": "mₓ (biased)",
+      "v": "vₓ (biased)",
+      "mhat": "m̂ₓ (corrected)",
+      "vhat": "v̂ₓ (corrected)",
+      "effectiveLR": "Eff. LR",
+      "bias1Title": "Bias correction factor តី ១",
+      "bias1Early": "← ធ្វើ​ខ្លាង​ពើលដើម​, អស់​ក្វា​នៅ​ពើល​ t ធ្វើ",
+      "bias1Mid": "← ​កំពុងតែថយចុះ",
+      "bias1Late": "← ជិត​ 1× — Correction ស្តើរ​គ្មាន​ន័យ",
+      "bias2Title": "Bias correction factor តី ២",
+      "bias2Early": "← ធ្វើ​ខ្លាង​ណាស់ (β₂=0.999 ត្រូ​ build-up យឺត)",
+      "bias2Mid": "← កំពុងតែ Normalize",
+      "bias2Late": "← ជិត​ 1×"
     }
   }
 }

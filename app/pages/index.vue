@@ -27,6 +27,13 @@ const rooms = [
         slug: 'gradient-descent',
         icon: '⛰️',
         image: '/assets/img/gradient_2.gif'
+    },
+    {
+        titleKey: 'rooms.adamOptimizer.title',
+        descriptionKey: 'rooms.adamOptimizer.description',
+        slug: 'adam-optimizer',
+        icon: '🧭',
+        image: '/assets/img/adam2.gif'
     }
 ]
 
@@ -46,17 +53,29 @@ function moveOrb() {
     requestAnimationFrame(moveOrb)
 }
 
+const scrolled = ref(false)
+
 onMounted(() => {
     window.addEventListener('mousemove', (event) => {
         tgX = event.clientX
         tgY = event.clientY
     })
+    window.addEventListener('scroll', () => {
+        scrolled.value = window.scrollY > 60
+    }, { passive: true })
     moveOrb()
 })
 </script>
 
 <template>
     <div class="min-h-screen bg-(--color-bg)">
+        <!-- Sticky Nav Controls -->
+        <div :class="['nav-controls', { scrolled }]">
+            <AuthorLink />
+            <LanguageSwitcher />
+            <ColorModeButton />
+        </div>
+
         <!-- Hero Section -->
         <section
             class="relative min-h-[90vh] md:min-h-[90vh] flex items-center overflow-hidden bg-linear-to-b from-(--color-bg) to-(--color-bg-secondary)">
@@ -65,18 +84,11 @@ onMounted(() => {
                 class="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-(--color-primary) to-transparent">
             </div>
 
-            <!-- Top Right Controls -->
-            <div class="absolute top-8 right-8 z-20 flex items-center gap-3">
-                <AuthorLink />
-                <LanguageSwitcher />
-                <ColorModeButton />
-            </div>
-
-            <div class="max-w-7xl mx-auto px-8 md:px-8 py-16 md:py-16 relative z-10">
+            <div class="max-w-7xl mx-auto px-4 sm:px-8 md:px-8 py-16 md:py-16 relative z-10">
                 <div class="max-w-3xl mx-auto text-center relative z-10">
                     <motion.h1 :initial="{ opacity: 0, y: 30 }" :animate="{ opacity: 1, y: 0 }"
                         :transition="{ duration: 0.8, ease: 'easeOut' }"
-                        class="hero-title text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold leading-[2] mb-6 tracking-tight text-(--color-text)">
+                        class="hero-title text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold leading-tight sm:leading-[1.5] md:leading-[2] mb-6 tracking-tight text-(--color-text)">
                         {{ $t('hero.title') }}
                     </motion.h1>
                     <motion.p :initial="{ opacity: 0, y: 30 }" :animate="{ opacity: 1, y: 0 }"
@@ -210,6 +222,37 @@ onMounted(() => {
 </template>
 
 <style scoped>
+.nav-controls {
+    position: fixed;
+    left: 50%;
+    top: 1.5rem;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    transform: translateX(calc(50vw - 100% - 1.5rem));
+    transition:
+        transform 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+        top 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+        padding 0.4s ease,
+        background 0.4s ease,
+        border-radius 0.4s ease,
+        box-shadow 0.4s ease,
+        border 0.4s ease;
+}
+
+.nav-controls.scrolled {
+    top: 1rem;
+    transform: translateX(-50%);
+    padding: 0.5rem 1.25rem;
+    border-radius: 9999px;
+    background: color-mix(in srgb, var(--color-bg) 82%, transparent);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--color-border);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12), 0 1px 4px rgba(0, 0, 0, 0.06);
+}
+
 /* Hero text visibility improvements */
 .hero-title {
     text-shadow:
@@ -288,9 +331,13 @@ onMounted(() => {
     height: 100%;
     top: 0;
     left: 0;
-    filter: url(#goo) blur(40px);
+    filter: url(#goo) blur(28px);
     pointer-events: none;
-    opacity: 0.4;
+    opacity: 0.35;
+}
+
+.dark .gradient-orbs-container {
+    opacity: 0.75;
 }
 
 .orb {
@@ -300,62 +347,62 @@ onMounted(() => {
 }
 
 .orb-1 {
-    background: radial-gradient(circle at center, rgba(44, 62, 80, 0.8) 0%, rgba(44, 62, 80, 0) 50%);
-    width: 80%;
-    height: 80%;
-    top: calc(50% - 40%);
-    left: calc(50% - 40%);
+    background: radial-gradient(circle at center, rgba(44, 62, 80, 1) 0%, rgba(44, 62, 80, 0) 70%);
+    width: 100%;
+    height: 100%;
+    top: calc(50% - 50%);
+    left: calc(50% - 50%);
     transform-origin: center center;
     animation: moveVertical 30s ease infinite;
 }
 
 .orb-2 {
-    background: radial-gradient(circle at center, rgba(231, 76, 60, 0.8) 0%, rgba(231, 76, 60, 0) 50%);
-    width: 80%;
-    height: 80%;
-    top: calc(50% - 40%);
-    left: calc(50% - 40%);
+    background: radial-gradient(circle at center, rgba(231, 76, 60, 1) 0%, rgba(231, 76, 60, 0) 70%);
+    width: 100%;
+    height: 100%;
+    top: calc(50% - 50%);
+    left: calc(50% - 50%);
     transform-origin: calc(50% - 400px);
     animation: moveInCircle 20s reverse infinite;
 }
 
 .orb-3 {
-    background: radial-gradient(circle at center, rgba(127, 140, 141, 0.8) 0%, rgba(127, 140, 141, 0) 50%);
-    width: 80%;
-    height: 80%;
-    top: calc(50% - 40% + 200px);
-    left: calc(50% - 40% - 500px);
+    background: radial-gradient(circle at center, rgba(127, 140, 141, 1) 0%, rgba(127, 140, 141, 0) 70%);
+    width: 100%;
+    height: 100%;
+    top: calc(50% - 50% + 200px);
+    left: calc(50% - 50% - 500px);
     transform-origin: calc(50% + 400px);
     animation: moveInCircle 40s linear infinite;
 }
 
 .orb-4 {
-    background: radial-gradient(circle at center, rgba(44, 62, 80, 0.8) 0%, rgba(44, 62, 80, 0) 50%);
-    width: 80%;
-    height: 80%;
-    top: calc(50% - 40%);
-    left: calc(50% - 40%);
+    background: radial-gradient(circle at center, rgba(44, 62, 80, 1) 0%, rgba(44, 62, 80, 0) 70%);
+    width: 100%;
+    height: 100%;
+    top: calc(50% - 50%);
+    left: calc(50% - 50%);
     transform-origin: calc(50% - 200px);
     animation: moveHorizontal 40s ease infinite;
-    opacity: 0.7;
+    opacity: 0.9;
 }
 
 .orb-5 {
-    background: radial-gradient(circle at center, rgba(231, 76, 60, 0.8) 0%, rgba(231, 76, 60, 0) 50%);
-    width: calc(80% * 2);
-    height: calc(80% * 2);
-    top: calc(50% - 80%);
-    left: calc(50% - 80%);
+    background: radial-gradient(circle at center, rgba(231, 76, 60, 1) 0%, rgba(231, 76, 60, 0) 70%);
+    width: calc(100% * 2);
+    height: calc(100% * 2);
+    top: calc(50% - 100%);
+    left: calc(50% - 100%);
     transform-origin: calc(50% - 800px) calc(50% + 200px);
     animation: moveInCircle 20s ease infinite;
 }
 
 .orb-interactive {
-    background: radial-gradient(circle at center, rgba(127, 140, 141, 0.8) 0%, rgba(127, 140, 141, 0) 50%);
+    background: radial-gradient(circle at center, rgba(127, 140, 141, 1) 0%, rgba(127, 140, 141, 0) 70%);
     width: 100%;
     height: 100%;
     top: -50%;
     left: -50%;
-    opacity: 0.7;
+    opacity: 0.9;
 }
 </style>

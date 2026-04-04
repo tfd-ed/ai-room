@@ -21,7 +21,7 @@
     --color-border: #e5e7eb;
     --color-accent: #3b82f6;
 
-    --font-sans: 'Inter', 'Noto Serif Khmer', sans-serif;
+    --font-sans: 'Google Sans', sans-serif;
     /* --font-display: 'Inter', 'Noto Serif Khmer', sans-serif; */
 }
 
@@ -35,6 +35,22 @@
     --color-text-secondary: #9ca3af;
 
     --color-border: #1f2937;
+}
+
+/* Page transitions */
+.page-enter-active,
+.page-leave-active {
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.page-enter-from {
+    opacity: 0;
+    transform: translateY(8px);
+}
+
+.page-leave-to {
+    opacity: 0;
+    transform: translateY(-8px);
 }
 
 /* Base styles */
