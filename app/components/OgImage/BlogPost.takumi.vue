@@ -17,16 +17,15 @@ defineProps({
     <div class="flex items-center gap-4">
       <!-- <div class="text-6xl">{{ icon }}</div> -->
       <div class="flex flex-col">
-        <div class="text-2xl font-bold text-gray-700" style="font-family: 'Inter', 'Noto Serif Khmer', sans-serif;">AI &
+        <div class="text-2xl font-bold text-gray-700" style="font-family: 'Google Sans', sans-serif;">AI &
           ML Playroom</div>
-        <div class="text-lg text-gray-500" style="font-family: 'Inter', 'Noto Serif Khmer', sans-serif;">Interactive
+        <div class="text-lg text-gray-500" style="font-family: 'Google Sans', sans-serif;">Interactive
           Learning Platform</div>
       </div>
     </div>
 
     <div class="flex flex-col gap-6">
-      <h1 class="text-[80px] font-extrabold m-0"
-        style="line-height: 1.1;font-family: 'Inter', 'Noto Serif Khmer', sans-serif;">
+      <h1 class="text-[80px] font-extrabold m-0" style="line-height: 1.1;font-family: 'Google Sans', sans-serif;">
         {{ title }}
       </h1>
     </div>
@@ -37,9 +36,9 @@ defineProps({
         <img :src="avatar" alt="Avatar" class="w-full h-full" style="object-fit: cover; border-radius: 50%;">
       </div>
       <div class="flex flex-col">
-        <span class="text-[32px]" style="font-family: 'Inter', 'Noto Serif Khmer', sans-serif;">{{ author
+        <span class="text-[32px]" style="font-family: 'Google Sans', sans-serif;">{{ author
           }}</span>
-        <span class="text-[24px] text-neutral-400" style="font-family: 'Inter', 'Noto Serif Khmer', sans-serif;">{{ date
+        <span class="text-[24px] text-neutral-400" style="font-family: 'Google Sans', sans-serif;">{{ date
           }}</span>
       </div>
     </div>
