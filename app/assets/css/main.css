@@ -1,16 +1,13 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
 
-@layer theme, base, components, utilities;
-@import "tailwindcss/theme.css" layer(theme);
-@import "tailwindcss/utilities.css" layer(utilities);
-
-/* Define design tokens */
+/* ─── Design tokens ──────────────────────────────────────────── */
 @theme {
     --color-primary: #2c3e50;
     --color-secondary: #e74c3c;
+    --color-accent: #3b82f6;
 
-    /* Light mode colors (default) */
+    /* Light mode (default) */
     --color-bg: #ffffff;
     --color-bg-secondary: #f9fafb;
     --color-bg-card: #ffffff;
@@ -19,13 +16,14 @@
     --color-text-secondary: #6b7280;
 
     --color-border: #e5e7eb;
-    --color-accent: #3b82f6;
 
+    /* Fonts — use --font-sans to wire into Tailwind's font-sans utility */
     --font-sans: 'Google Sans', sans-serif;
-    /* --font-display: 'Inter', 'Noto Serif Khmer', sans-serif; */
+    --font-display: 'Google Sans', sans-serif;
+    --font-mono: 'Consolas', 'Monaco', 'Courier New', monospace;
 }
 
-/* Dark mode colors */
+/* ─── Dark mode overrides ────────────────────────────────────── */
 .dark {
     --color-bg: #0b1120;
     --color-bg-secondary: #111827;
@@ -37,7 +35,7 @@
     --color-border: #1f2937;
 }
 
-/* Page transitions */
+/* ─── Page transitions ───────────────────────────────────────── */
 .page-enter-active,
 .page-leave-active {
     transition: opacity 0.2s ease, transform 0.2s ease;
@@ -53,7 +51,7 @@
     transform: translateY(-8px);
 }
 
-/* Base styles */
+/* ─── Base styles ────────────────────────────────────────────── */
 @layer base {
     * {
         margin: 0;
@@ -66,7 +64,7 @@
     }
 
     button {
-        @apply hover:cursor-pointer;
+        @apply cursor-pointer;
     }
 
     body {
@@ -80,11 +78,11 @@
 
     ::selection {
         background: var(--color-secondary);
-        color: white;
+        color: #fff;
     }
 }
 
-/* Math rendering styles */
+/* ─── Math rendering ─────────────────────────────────────────── */
 .math-display {
     overflow-x: auto;
     padding: 1rem 0;
@@ -95,7 +93,7 @@ mjx-container {
     color: var(--color-text);
 }
 
-/* Prose styles for dark theme */
+/* ─── Prose ──────────────────────────────────────────────────── */
 .prose {
     color: var(--color-text);
     max-width: none;
@@ -172,7 +170,7 @@ mjx-container {
     padding: 0.25rem 0.5rem;
     border-radius: 0.375rem;
     font-size: 0.9em;
-    font-family: 'Consolas', 'Monaco', monospace;
+    font-family: var(--font-mono);
 }
 
 .prose pre {
@@ -192,7 +190,7 @@ mjx-container {
     padding: 0;
     border-radius: 0;
     font-size: inherit;
-    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-family: var(--font-mono);
 }
 
 .prose blockquote {
@@ -203,7 +201,7 @@ mjx-container {
     font-style: italic;
 }
 
-/* Gradient text utility */
+/* ─── Utilities ──────────────────────────────────────────────── */
 .gradient-text {
     background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
     -webkit-background-clip: text;

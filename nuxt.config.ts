@@ -13,7 +13,8 @@ export default defineNuxtConfig({
     '@nuxtjs/i18n',
     '@stefanobartoletti/nuxt-social-share',
     'nuxt-og-image',
-    'motion-v/nuxt'
+    'motion-v/nuxt',
+    '@nuxt/fonts',
   ],
   css: ['./app/assets/css/main.css', 'katex/dist/katex.min.css'],
   devtools: { enabled: true },
@@ -79,11 +80,22 @@ export default defineNuxtConfig({
       fallbackLocale: 'km'
     }
   },
-  googleFonts: {
-    families: {
-      // 'Inter': [400, 500, 600, 700],
-      'Google Sans': [400, 500, 600, 700, 800, 900],
-    }
+  // googleFonts: {
+  //   families: {
+  //     // 'Inter': [400, 500, 600, 700],
+  //     'Google Sans': [400, 500, 600, 700, 800, 900],
+  //   }
+  // },
+
+  fonts: {
+    families: [
+      {
+        name: 'Google Sans',
+        weights: [400, 500, 600, 700, 800, 900],
+        global: true, provider: 'google',
+        subsets: ['latin', 'khmer']
+      },
+    ]
   },
 
 

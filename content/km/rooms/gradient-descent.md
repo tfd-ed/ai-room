@@ -5,6 +5,7 @@ author: 'ចៅ ដារ៉ា - Founder of TFDevs'
 date: '2026-03-19'
 updatedAt: '2026-03-20'
 updateSummary: 'បានបន្ថែមការអនុវត្ត Python និងការពន្យល់លម្អិតអំពី gradient descent។'
+avatar: '/assets/img/avatar.jpg'
 ---
 <div class="w-full max-w-2xl mx-auto bg-white rounded-lg shadow-md overflow-hidden mb-2" style="height: 300px;">
   <img src="/assets/img/gradient_2.gif" alt="Gradient Descent Illustration" class="w-full h-full" style="object-fit: contain;" />

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { avatar } from '#build/ui'
+
 const route = useRoute()
 const slug = route.params.slug as string
 const { locale, t } = useI18n()
@@ -60,8 +62,9 @@ const roomIcons: Record<string, string> = {
 defineOgImage('BlogPost', {
     title: page.value.title,
     description: page.value.description,
-    author: page.value.meta.author,
-    date: page.value.meta.date,
+    author: page.value.author,
+    date: page.value.date,
+    avatar: page.value.avatar
     // icon: roomIcons[slug]
 })
 
@@ -110,26 +113,26 @@ useSeoMeta({
                     <!-- Auhor and Date -->
                     <div class="flex items-center gap-4 mt-6">
                         <div class="flex items-center gap-3">
-                            <img v-if="page?.meta?.authorAvatar" :src="page.meta.authorAvatar" alt="Author Avatar"
-                                class="w-8 h-8 rounded-full object-cover" />
+                            <img v-if="page?.avatar" :src="page.avatar" alt="Author Avatar"
+                                class="w-15 h-15 rounded-full object-cover" />
                             <div>
-                                <p class="text-sm font-medium text-text">{{ page?.meta?.author }}</p>
+                                <p class="text-sm font-medium text-text">{{ page?.author }}</p>
                                 <p class="text-xs text-text-secondary">
-                                    {{ new Date(page?.meta?.date).toLocaleDateString(locale.value, {
+                                    {{ new Date(page?.date).toLocaleDateString(locale.value, {
                                         year: 'numeric',
                                         month: 'long', day: 'numeric'
                                     }) }}
                                 </p>
                                 <p class="text-xs text-text-secondary">
                                     {{ $t('updatedAt') }}:
-                                    {{ new Date(page?.meta?.updatedAt).toLocaleDateString(locale.value, {
+                                    {{ new Date(page?.updatedAt).toLocaleDateString(locale.value, {
                                         year: 'numeric',
                                         month: 'long', day: 'numeric'
                                     }) }}
                                 </p>
                                 <p class="text-xs text-text-secondary">
                                     {{ $t('updateSummary') }}:
-                                    {{ page?.meta?.updateSummary }}
+                                    {{ page?.updateSummary }}
                                 </p>
                             </div>
                         </div>

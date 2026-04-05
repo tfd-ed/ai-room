@@ -5,6 +5,7 @@ author: Chau Dara - ស្ថាបនិក TFDevs
 date: '2026-04-04'
 updatedAt: '2026-04-04'
 updateSummary: 'N/A'
+avatar: '/assets/img/avatar.jpg'
 ---
 <div class="w-full max-w-2xl mx-auto bg-white rounded-lg shadow-md overflow-hidden mb-2" style="height: 300px;">
   <img src="/assets/img/adam2.gif" alt="Gradient Descent Illustration" class="w-full h-full" style="object-fit: contain;" />

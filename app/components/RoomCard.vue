@@ -71,14 +71,16 @@ const props = defineProps<Props>()
     right: 0;
     height: 3px;
     background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    /* Use clip-path instead of transform: scaleX to avoid Safari compositing
+       layer bug where transform causes the child to bypass overflow: hidden +
+       border-radius clipping on the parent, appearing as a floating rectangle. */
+    clip-path: inset(0 100% 0 0);
+    transition: clip-path 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 10;
 }
 
 .room-card:hover .top-gradient-line {
-    transform: scaleX(1);
+    clip-path: inset(0 0% 0 0);
 }
 
 /* Card glow effect */
@@ -95,6 +97,15 @@ const props = defineProps<Props>()
 
 .room-card:hover .card-glow {
     opacity: 1;
+}
+
+/* Safari fix: force the card into its own compositing layer so that
+   overflow: hidden + border-radius properly clips all absolutely-positioned
+   children. Without this, Safari skips the rounded-corner clip on elements
+   that have their own GPU layer (e.g. the card-glow using inset: 0). */
+.room-card {
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
 }
 
 /* Image gradient background animation */

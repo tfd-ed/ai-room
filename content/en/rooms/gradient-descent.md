@@ -5,6 +5,7 @@ author: 'Chau Dara - Founder of TFDevs'
 date: '2026-03-19'
 updatedAt: '2026-03-20'
 updateSummary: 'Added Python implementation and detailed explanations of gradient descent.'
+avatar: '/assets/img/avatar.jpg'
 ---
 
 <div class="w-full max-w-2xl mx-auto bg-white rounded-lg shadow-md overflow-hidden mb-2" style="height: 300px;">
