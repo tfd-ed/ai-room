@@ -73,8 +73,15 @@ useSeoMeta({
     description: page.value.description,
     ogTitle: pageTitle,
     ogDescription: page.value.description,
+    ogType: 'article',
+    ogUrl: `https://ai.tfdevs.com${route.path}`,
+    ogSiteName: 'AI/ML Room',
+    twitterCard: 'summary_large_image',
     twitterTitle: pageTitle,
-    twitterDescription: page.value.description
+    twitterDescription: page.value.description,
+    articlePublishedTime: page.value.date,
+    articleModifiedTime: page.value.updatedAt,
+    articleAuthor: page.value.author,
 })
 </script>
 

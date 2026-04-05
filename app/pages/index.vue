@@ -16,6 +16,10 @@ useSeoMeta({
     description: siteSubtitle,
     ogTitle: siteTitle,
     ogDescription: siteSubtitle,
+    ogType: 'website',
+    ogUrl: 'https://ai.tfdevs.com',
+    ogSiteName: 'AI/ML Room',
+    twitterCard: 'summary_large_image',
     twitterTitle: siteTitle,
     twitterDescription: siteSubtitle
 })

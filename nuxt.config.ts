@@ -9,12 +9,13 @@ export default defineNuxtConfig({
     '@nuxt/ui',
     '@nuxt/eslint',
     '@nuxt/content',
-    '@nuxtjs/google-fonts',
+    // '@nuxtjs/google-fonts',
     '@nuxtjs/i18n',
     '@stefanobartoletti/nuxt-social-share',
     'nuxt-og-image',
     'motion-v/nuxt',
     '@nuxt/fonts',
+    '@nuxtjs/sitemap',
   ],
   css: ['./app/assets/css/main.css', 'katex/dist/katex.min.css'],
   devtools: { enabled: true },
@@ -66,6 +67,7 @@ export default defineNuxtConfig({
     }
   },
   i18n: {
+    baseUrl: 'https://ai.tfdevs.com',
     strategy: 'prefix_except_default',
     defaultLocale: 'km',
     langDir: 'locales/',
@@ -79,6 +81,11 @@ export default defineNuxtConfig({
       alwaysRedirect: true,
       fallbackLocale: 'km'
     }
+  },
+
+  site: {
+    url: 'https://ai.tfdevs.com',
+    name: 'AI & ML Room',
   },
   // googleFonts: {
   //   families: {
