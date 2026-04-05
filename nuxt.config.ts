@@ -110,10 +110,10 @@ export default defineNuxtConfig({
     baseUrl: 'https://ai.tfdevs.com' // required!
     // other optional module options
   },
-  site: {
-    url: 'https://ai.tfdevs.com',
-    name: 'AI & ML Room',
-  },
+  // site: {
+  //   url: 'https://ai.tfdevs.com',
+  //   name: 'AI & ML Room',
+  // },
   nitro: {
     prerender: {
       autoSubfolderIndex: false,

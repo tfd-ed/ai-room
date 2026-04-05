@@ -91,6 +91,7 @@ useSeoMeta({
         <div :class="['nav-controls', { scrolled }]">
             <AuthorLink />
             <LanguageSwitcher />
+            <AppSearch />
             <ColorModeButton />
         </div>
 

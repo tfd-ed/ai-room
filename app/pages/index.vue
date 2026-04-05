@@ -75,8 +75,10 @@ onMounted(() => {
     <div class="min-h-screen bg-(--color-bg)">
         <!-- Sticky Nav Controls -->
         <div :class="['nav-controls', { scrolled }]">
-            <AuthorLink />
+
             <LanguageSwitcher />
+            <AuthorLink />
+            <AppSearch />
             <ColorModeButton />
         </div>
 
