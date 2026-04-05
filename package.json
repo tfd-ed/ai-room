@@ -20,6 +20,7 @@
     "better-sqlite3": "^12.8.0",
     "motion-v": "^2.0.1",
     "nuxt": "^4.4.2",
+    "nuxt-llms": "^0.2.0",
     "nuxt-og-image": "6.0.4",
     "rehype-katex": "^7.0.1",
     "rehype-mathjax": "^7.1.0",
