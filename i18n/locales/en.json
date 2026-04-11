@@ -13,6 +13,10 @@
     "title": "Explore Interactive Rooms",
     "subtitle": "Each room is a deep dive into a fundamental concept in AI and machine learning, complete with interactive visualizations and comprehensive mathematical explanations.",
     "exploreLink": "Explore",
+    "derivatives": {
+      "title": "Derivatives — The Language of Change",
+      "description": "Build calculus from scratch: slopes, limits, and the derivative — then see how it becomes the engine behind machine learning optimization."
+    },
     "gradientDescent": {
       "title": "Gradient Descent",
       "description": "Explore the fundamental optimization algorithm that powers machine learning. Understand how it finds the minimum of a function step by step."
@@ -143,6 +147,62 @@
       "bias2Early": "← Very large (β₂=0.999 means slow build-up)",
       "bias2Mid": "← Gradually normalising",
       "bias2Late": "← Near 1×"
+    }
+  },
+  "interactiveDerivative": {
+    "note": "Move x₀ along the curve, then watch h shrink toward 0 — the red secant line rotates into the green tangent, revealing the derivative as an instantaneous slope.",
+    "controls": {
+      "title": "Controls",
+      "function": "Function",
+      "x": "Point x₀",
+      "h": "Step size h",
+      "showTangent": "Show tangent line",
+      "showSecant": "Show secant line",
+      "animateH": "Animate h → 0",
+      "stop": "Stop",
+      "resetH": "Reset h"
+    },
+    "legend": {
+      "tangent": "Tangent (slope = f′(x₀))",
+      "secant": "Secant ([f(x₀+h)−f(x₀)]/h)"
+    },
+    "functions": {
+      "quadratic": "Quadratic: f(x) = x²",
+      "cubic": "Cubic: f(x) = x³",
+      "sine": "Sine: f(x) = sin(x)",
+      "polynomial": "Polynomial: f(x) = x³ − 3x² + 2",
+      "exponential": "Exponential: f(x) = eˣ"
+    },
+    "stats": {
+      "title": "Live Computation",
+      "x": "x₀",
+      "fx": "f(x₀)",
+      "analytical": "f′(x₀) — exact",
+      "numerical": "[f(x₀+h) − f(x₀)] / h",
+      "error": "Approx error",
+      "increasing": "↗ Increasing",
+      "decreasing": "↘ Decreasing",
+      "flat": "→ Flat (critical point)"
+    },
+    "charts": {
+      "main": "Function Curve & Derivative Visualization"
+    },
+    "info": {
+      "title": "Geometric Meaning of the Derivative",
+      "subtitle": "The active column highlights the current state of f′(x₀).",
+      "current": "current",
+      "positive": {
+        "title": "f′(x) > 0 — Increasing",
+        "desc": "The function rises as x increases. The tangent line slopes upward. To find the minimum, gradient descent moves left."
+      },
+      "zero": {
+        "title": "f′(x) = 0 — Flat",
+        "desc": "The tangent line is horizontal. This is a critical point — possibly a minimum, maximum, or saddle point."
+      },
+      "negative": {
+        "title": "f′(x) < 0 — Decreasing",
+        "desc": "The function falls as x increases. The tangent line slopes downward. To find the minimum, gradient descent moves right."
+      }
     }
   }
 }

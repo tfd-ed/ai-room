@@ -8,8 +8,71 @@ interface Props {
 }
 
 const localePath = useLocalePath()
-
 const props = defineProps<Props>()
+
+const imgRef = ref<HTMLImageElement | null>(null)
+let rafId: number | null = null
+let loopCanvas: HTMLCanvasElement | null = null
+let loopCtx: CanvasRenderingContext2D | null = null
+
+// Detect when GIF animation stalls and restart it to create an infinite loop.
+// Uses a tiny off-screen canvas to compare sampled pixels across frames;
+// when identical for ~500 ms the image src is reset (browser serves from cache).
+const startGifLoop = () => {
+    if (!loopCtx || !imgRef.value) return
+    if (rafId !== null) cancelAnimationFrame(rafId)
+
+    let lastHash = ''
+    let lastChangeAt = Date.now()
+    // 2 s of no pixel change means the GIF has stopped on its last frame.
+    // GIFs animate at ~10-25 fps so individual frames can appear for hundreds
+    // of ms — using a frame-count threshold would trigger false restarts.
+    const STALL_MS = 2000
+
+    const check = () => {
+        if (!imgRef.value || !loopCtx) return
+        try {
+            loopCtx.drawImage(imgRef.value, 0, 0, 8, 8)
+            const d = loopCtx.getImageData(0, 0, 8, 8).data
+            const hash = `${d[0]},${d[4]},${d[16]},${d[32]},${d[64]},${d[128]},${d[192]},${d[252]}`
+            if (hash !== lastHash) {
+                lastHash = hash
+                lastChangeAt = Date.now()
+            } else if (Date.now() - lastChangeAt > STALL_MS) {
+                imgRef.value.src = ''
+                imgRef.value.src = props.image!
+                lastHash = ''
+                lastChangeAt = Date.now()
+                return // load event will restart the check
+            }
+        } catch {
+            // ignore drawImage errors while src is transitioning
+        }
+        rafId = requestAnimationFrame(check)
+    }
+    rafId = requestAnimationFrame(check)
+}
+
+const handleImgLoad = () => {
+    if (imgRef.value?.naturalWidth && props.image) startGifLoop()
+}
+
+onMounted(() => {
+    if (!props.image?.toLowerCase().endsWith('.gif') || !imgRef.value) return
+    loopCanvas = document.createElement('canvas')
+    loopCanvas.width = 4
+    loopCanvas.height = 4
+    loopCtx = loopCanvas.getContext('2d', { willReadFrequently: true })
+    imgRef.value.addEventListener('load', handleImgLoad)
+    if (imgRef.value.complete && imgRef.value.naturalWidth) startGifLoop()
+})
+
+onBeforeUnmount(() => {
+    if (rafId !== null) cancelAnimationFrame(rafId)
+    imgRef.value?.removeEventListener('load', handleImgLoad)
+    loopCanvas = null
+    loopCtx = null
+})
 </script>
 
 <template>
@@ -24,8 +87,8 @@ const props = defineProps<Props>()
         <!-- Image container -->
         <div v-if="image"
             class="w-full h-60 overflow-hidden flex items-center justify-center p-6 bg-white group-hover:bg-position-100">
-            <img :src="image" :alt="title"
-                class="w-full h-full object-contain  opacity-90 transition-all duration-300 group-hover:scale-105 group-hover:opacity-100" />
+            <img ref="imgRef" :src="image" :alt="title"
+                class="w-full h-full object-contain opacity-90 transition-[transform,opacity] duration-300 group-hover:scale-105 group-hover:opacity-100" />
         </div>
 
         <!-- Content -->

@@ -26,6 +26,13 @@ useSeoMeta({
 
 const rooms = [
     {
+        titleKey: 'rooms.derivatives.title',
+        descriptionKey: 'rooms.derivatives.description',
+        slug: 'derivatives',
+        icon: '📐',
+        image: '/assets/img/derivative.gif'
+    },
+    {
         titleKey: 'rooms.gradientDescent.title',
         descriptionKey: 'rooms.gradientDescent.description',
         slug: 'gradient-descent',
@@ -38,7 +45,8 @@ const rooms = [
         slug: 'adam-optimizer',
         icon: '🧭',
         image: '/assets/img/adam2.gif'
-    }
+    },
+
 ]
 
 // Interactive orb logic
@@ -57,16 +65,11 @@ function moveOrb() {
     requestAnimationFrame(moveOrb)
 }
 
-const scrolled = ref(false)
-
 onMounted(() => {
     window.addEventListener('mousemove', (event) => {
         tgX = event.clientX
         tgY = event.clientY
     })
-    window.addEventListener('scroll', () => {
-        scrolled.value = window.scrollY > 60
-    }, { passive: true })
     moveOrb()
 })
 </script>
@@ -74,13 +77,7 @@ onMounted(() => {
 <template>
     <div class="min-h-screen bg-(--color-bg)">
         <!-- Sticky Nav Controls -->
-        <div :class="['nav-controls', { scrolled }]">
-
-            <LanguageSwitcher />
-            <AuthorLink />
-            <AppSearch />
-            <ColorModeButton />
-        </div>
+        <HeaderNav />
 
         <!-- Hero Section -->
         <section
@@ -228,37 +225,6 @@ onMounted(() => {
 </template>
 
 <style scoped>
-.nav-controls {
-    position: fixed;
-    left: 50%;
-    top: 1.5rem;
-    z-index: 50;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    transform: translateX(calc(50vw - 100% - 1.5rem));
-    transition:
-        transform 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-        top 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-        padding 0.4s ease,
-        background 0.4s ease,
-        border-radius 0.4s ease,
-        box-shadow 0.4s ease,
-        border 0.4s ease;
-}
-
-.nav-controls.scrolled {
-    top: 1rem;
-    transform: translateX(-50%);
-    padding: 0.5rem 1.25rem;
-    border-radius: 9999px;
-    background: color-mix(in srgb, var(--color-bg) 82%, transparent);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid var(--color-border);
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12), 0 1px 4px rgba(0, 0, 0, 0.06);
-}
-
 /* Hero text visibility improvements */
 .hero-title {
     text-shadow:

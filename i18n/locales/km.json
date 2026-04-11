@@ -13,6 +13,10 @@
     "title": "ស្វែងរកបន្ទប់អន្តរកម្ម",
     "subtitle": "បន្ទប់នីមួយៗបង្ហាញពីការស្វែងយល់ស៊ីជម្រៅទៅក្នុងគំនិតមូលដ្ឋាននៃ AI និង Machine Learning រួមជាមួយនឹងការពិសោធន៏ និងការពន្យល់គណិតវិទ្យាយ៉ាងទូលំទូលាយ។",
     "exploreLink": "ចូលលេង",
+    "derivatives": {
+      "title": "ដេរីវេ — ភាសានៃការផ្លាស់ប្តូរ",
+      "description": "រៀនគណនា Derivative ពីដំបូង — មេគុណប្រាប់ទិស នឹង លីមីត — រហូតដល់ការយល់ដឹងពីរបៀបដែលវាជំរុញការ Optimize ក្នុង Machine Learning។"
+    },
     "gradientDescent": {
       "title": "ស្វែងយល់ពី Gradient Descent Algorithm",
       "description": "ស្វែងយល់ពីរ Algorithm ដែលជាមូលដ្ឋានគ្រឹះនៃ Machine Learning។ យល់ដឹងពីរបៀបដែលវាស្វែងរកតម្លៃអប្បបរមានៃអនុគមន៍ម្តងមួយជំហានៗ។"
@@ -143,6 +147,62 @@
       "bias2Early": "← ធ្វើ​ខ្លាង​ណាស់ (β₂=0.999 ត្រូ​ build-up យឺត)",
       "bias2Mid": "← កំពុងតែ Normalize",
       "bias2Late": "← ជិត​ 1×"
+    }
+  },
+  "interactiveDerivative": {
+    "note": "ធ្វើចលនា x₀ តាមខ្សែកោង ហើយមើល h ប្រែតូចទៅ 0 — បន្ទាត់កាត់ (ក្រហម) រំកិលខ្លួនក្លាយជាបន្ទាត់ប៉ះ (បៃតង) ដែលបង្ហាញពីដេរីវេជា slope ភ្លាមៗ។",
+    "controls": {
+      "title": "ការ​កំ​ណត់",
+      "function": "អនុគមន៍",
+      "x": "ចំណុច x₀",
+      "h": "ចំងាយ h",
+      "showTangent": "បង្ហាញ Tangent",
+      "showSecant": "បង្ហាញ Secant",
+      "animateH": "ធ្វើឲ្យ h → 0",
+      "stop": "ឈប់",
+      "resetH": "កំណត់ h ឡើងវិញ"
+    },
+    "legend": {
+      "tangent": "Tangent (slope = f′(x₀))",
+      "secant": "Secant ([f(x₀+h)−f(x₀)]/h)"
+    },
+    "functions": {
+      "quadratic": "ពហុធាដឺក្រេ ២: f(x) = x²",
+      "cubic": "ពហុធាដឺក្រេ ៣: f(x) = x³",
+      "sine": "Sine: f(x) = sin(x)",
+      "polynomial": "ពហុធា: f(x) = x³ − 3x² + 2",
+      "exponential": "ស្វ័យគុណ: f(x) = eˣ"
+    },
+    "stats": {
+      "title": "ការគណនាផ្ទាល់",
+      "x": "x₀",
+      "fx": "f(x₀)",
+      "analytical": "f′(x₀) — ពិតប្រាកដ",
+      "numerical": "[f(x₀+h) − f(x₀)] / h",
+      "error": "កំហុស",
+      "increasing": "↗ កំពុងកើន",
+      "decreasing": "↘ កំពុងចុះ",
+      "flat": "→ រាបស្មើ (ចំណុចវិបាក)"
+    },
+    "charts": {
+      "main": "ខ្សែកោង និង ដេរីវេ"
+    },
+    "info": {
+      "title": "អត្ថន័យ ដេរីវេ តាមរូបធរណីមាត្រ",
+      "subtitle": "ផ្នែកដែលភ្លឺ បង្ហាញ​ស្ថានភាព​បច្ចុប្បន្ន​នៃ f′(x₀)។",
+      "current": "ទីតាំងបច្ចុប្បន្ន",
+      "positive": {
+        "title": "f′(x) > 0 — កំពុងកើន",
+        "desc": "អនុគមន៍កើនឡើង នៅពេល x ដើរទៅស្ដាំ។ Gradient Descent ត្រូវដើរទៅឆ្វេង ដើម្បីចុះ Loss។"
+      },
+      "zero": {
+        "title": "f′(x) = 0 — រាបស្មើ",
+        "desc": "បន្ទាត់ប៉ះ (tangent line) រាបត្រង់ — ចំណុចនេះ (critical point) អាចជា minimum, maximum, ឬ saddle point។"
+      },
+      "negative": {
+        "title": "f′(x) < 0 — កំពុងចុះ",
+        "desc": "អនុគមន៍ចុះ នៅពេល x ដើរទៅស្ដាំ។ Gradient Descent ត្រូវដើរទៅស្ដាំ ដើម្បីចុះ Loss។"
+      }
     }
   }
 }

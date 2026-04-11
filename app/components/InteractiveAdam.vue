@@ -88,6 +88,15 @@ const dispBias2 = ref(1)
 const lossChartCanvas = ref<HTMLCanvasElement | null>(null)
 const contourDiv = ref<HTMLDivElement | null>(null)
 const lossChart = ref<any>(null)
+const formulaDisplay = ref<HTMLDivElement | null>(null)
+
+// Function formulas in LaTeX
+const functionFormulas: Record<string, string> = {
+    ravine: 'f(x,y) = \\frac{x^2}{2} + 10y^2',
+    rosenbrock: 'f(x,y) = (1-x)^2 + 100(y-x^2)^2',
+}
+
+const currentFormula = computed(() => functionFormulas[selectedFunction.value] || '')
 
 // ── Loss landscape ────────────────────────────────────────────────────────────
 
@@ -385,9 +394,33 @@ function initLossChart() {
     }))
 }
 
+function renderFormula() {
+    if (!formulaDisplay.value || !currentFormula.value) return
+    if (typeof window !== 'undefined' && (window as any).katex) {
+        try {
+            (window as any).katex.render(currentFormula.value, formulaDisplay.value, {
+                throwOnError: false,
+                displayMode: false,
+            })
+        } catch (error) {
+            console.error('Error rendering formula:', error)
+            formulaDisplay.value.textContent = currentFormula.value
+        }
+    } else {
+        formulaDisplay.value.textContent = currentFormula.value
+    }
+}
+
 // ── Watchers ──────────────────────────────────────────────────────────────────
 
-watch(selectedFunction, reset)
+watch(selectedFunction, () => {
+    reset()
+    nextTick(() => renderFormula())
+})
+
+watch(currentFormula, () => {
+    nextTick(() => renderFormula())
+})
 
 watch(() => colorMode.value, () => {
     if (lossChart.value) {
@@ -416,6 +449,7 @@ onMounted(() => {
             nextTick(() => {
                 initLossChart()
                 update3DPlot()
+                renderFormula()
             })
         } else if (tries >= 50) {
             clearInterval(iv)
@@ -606,9 +640,12 @@ onUnmounted(() => {
 
                 <!-- 3D surface + paths -->
                 <div class="bg-bg-card border border-border rounded-lg p-6">
-                    <h2 class="text-2xl font-semibold mb-4 text-text">
-                        {{ t('interactiveAdam.charts.surface') }}
-                    </h2>
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-2xl font-semibold text-text">
+                            {{ t('interactiveAdam.charts.surface') }}
+                        </h2>
+                        <div v-if="currentFormula" ref="formulaDisplay" class="katex-formula-inline"></div>
+                    </div>
                     <div ref="contourDiv" style="height: 420px;"></div>
                 </div>
 
@@ -732,5 +769,26 @@ onUnmounted(() => {
 
 :global(.dark) .slider-pink {
     background-color: #831843;
+}
+
+.katex-formula-inline {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    background: white;
+    border-radius: 0.375rem;
+    font-size: 1.25rem;
+}
+
+:global(.dark) .katex-formula-inline {
+    background: white;
+}
+
+.katex-formula-inline :deep(.katex) {
+    color: black;
+}
+
+:global(.dark) .katex-formula-inline :deep(.katex) {
+    color: black;
 }
 </style>

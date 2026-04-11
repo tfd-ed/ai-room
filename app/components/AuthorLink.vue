@@ -5,7 +5,7 @@ const authorUrl = 'https://www.youtube.com/@tfdevs'
 
 <template>
     <a :href="authorUrl" target="_blank" rel="noopener noreferrer"
-        class="group inline-flex items-center gap-2 px-4 py-2 bg-bg-card border border-border rounded-lg text-text text-sm font-medium no-underline transition-all duration-300 cursor-pointer hover:border-primary hover:bg-bg-secondary hover:-translate-y-px"
+        class="group inline-flex items-center gap-2 px-2 py-1.5 sm:px-4 sm:py-2 bg-bg-card border border-border rounded-lg text-text text-sm font-medium no-underline transition-all duration-300 cursor-pointer hover:border-primary hover:bg-bg-secondary hover:-translate-y-px"
         aria-label="Created by">
         <span class="hidden sm:inline text-text-secondary text-xs uppercase tracking-wider">By</span>
         <div class="flex items-center justify-center">

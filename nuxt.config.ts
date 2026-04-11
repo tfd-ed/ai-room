@@ -9,7 +9,7 @@ export default defineNuxtConfig({
     '@nuxt/ui',
     '@nuxt/eslint',
     '@nuxt/content',
-    'nuxt-llms',
+    // 'nuxt-llms',
     // '@nuxtjs/google-fonts',
     '@nuxtjs/i18n',
     '@stefanobartoletti/nuxt-social-share',
@@ -47,6 +47,12 @@ export default defineNuxtConfig({
     // Enable client-side page transition caching
     keepalive: true,
   },
+  components: [
+    {
+      path: '~/components',
+      pathPrefix: false,
+    },
+  ],
   content: {
     build: {
       markdown: {
@@ -67,21 +73,21 @@ export default defineNuxtConfig({
       }
     }
   },
-  llms: {
-    domain: 'https://ai.tfdevs.com',
-    title: 'AI & ML Room',
-    description: 'A knowledge hub for AI and Machine Learning concepts, algorithms, and best practices.',
-    sections: [
-      {
-        title: 'AI & ML Rooms',
-        description: 'In-depth articles on AI and Machine Learning concepts, algorithms, and techniques',
-        contentCollection: 'content',
-        contentFilters: [
-          { field: 'path', operator: 'LIKE', value: '/en/rooms%' },
-        ],
-      },
-    ],
-  },
+  // llms: {
+  //   domain: 'https://ai.tfdevs.com',
+  //   title: 'AI & ML Room',
+  //   description: 'A knowledge hub for AI and Machine Learning concepts, algorithms, and best practices.',
+  //   sections: [
+  //     {
+  //       title: 'AI & ML Rooms',
+  //       description: 'In-depth articles on AI and Machine Learning concepts, algorithms, and techniques',
+  //       contentCollection: 'content',
+  //       contentFilters: [
+  //         { field: 'path', operator: 'LIKE', value: '/en/rooms%' },
+  //       ],
+  //     },
+  //   ],
+  // },
   i18n: {
     baseUrl: 'https://ai.tfdevs.com',
     strategy: 'prefix_except_default',
