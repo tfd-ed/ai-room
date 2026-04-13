@@ -174,6 +174,11 @@ useSeoMeta({
             </div>
 
             <div class="max-w-screen-2xl mx-auto relative z-10">
+                <!-- Bootcamp Announcement -->
+                <AppAnnouncement :emphasize="$t('bootcamp.announcement.emphasize')"
+                    :description="$t('bootcamp.announcement.description')" :cta-label="$t('bootcamp.announcement.cta')"
+                    :cta-href="localePath('/bootcamp')" class="mb-6" />
+
                 <article
                     class="bg-bg-card border border-border rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 lg:p-12 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.2)]">
                     <ContentRenderer v-if="page" :value="page" class="prose" />

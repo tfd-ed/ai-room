@@ -204,5 +204,18 @@
         "desc": "The function falls as x increases. The tangent line slopes downward. To find the minimum, gradient descent moves right."
       }
     }
+  },
+  "bootcamp": {
+    "badge": "Enrollment Open · Batch 3",
+    "registerCta": "Join Telegram",
+    "registerText": "Register",
+    "detailCurriculum": "Detailed Curriculum",
+    "ctaCardTitle": "Ready to become an ML engineer?",
+    "ctaCardSubtitle": "Spots are limited. Join Batch 3 before enrollment closes.",
+    "announcement": {
+      "emphasize": "AI & ML Bootcamp Batch 3 is open!",
+      "description": "20 weeks · Math to MLOps · Build real models in production.",
+      "cta": "Learn More"
+    }
   }
 }

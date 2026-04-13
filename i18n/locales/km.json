@@ -204,5 +204,18 @@
         "desc": "អនុគមន៍ចុះ នៅពេល x ដើរទៅស្ដាំ។ Gradient Descent ត្រូវដើរទៅស្ដាំ ដើម្បីចុះ Loss។"
       }
     }
+  },
+  "bootcamp": {
+    "badge": "ការចុះឈ្មោះបើក · Batch 3",
+    "registerCta": "ចូលក្រុម Telegram",
+    "registerText": "ចុះឈ្មោះ",
+    "detailCurriculum": "កម្មវិធីសិក្សា​លម្អិត",
+    "ctaCardTitle": "ត្រៀមខ្លួនក្លាយជា ML Engineer?",
+    "ctaCardSubtitle": "កន្លែងមានកំណត់។ ចូលរួម Batch 3 មុន Enrollment បិទ។",
+    "announcement": {
+      "emphasize": "AI & ML Bootcamp Batch 3 កំពុងបើកចុះឈ្មោះ!",
+      "description": "22 សប្តាហ៍ · ពីគណិត ទៅកាន់ MLOps · បង្កើត Models ពិតប្រាកដ។",
+      "cta": "ស្វែងយល់បន្ថែម"
+    }
   }
 }

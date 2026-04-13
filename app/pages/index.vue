@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const { t } = useI18n()
+const localePath = useLocalePath()
 import { motion } from 'motion-v'
 
 const siteTitle = t('hero.title')
@@ -81,22 +82,22 @@ onMounted(() => {
 
         <!-- Hero Section -->
         <section
-            class="relative min-h-[90vh] md:min-h-[90vh] flex items-center overflow-hidden bg-linear-to-b from-(--color-bg) to-(--color-bg-secondary)">
+            class="relative min-h-[60vh] md:min-h-[75vh] flex items-center overflow-hidden bg-linear-to-b from-(--color-bg) to-(--color-bg-secondary)">
             <!-- Top gradient line -->
             <div
                 class="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-(--color-primary) to-transparent">
             </div>
 
-            <div class="max-w-7xl mx-auto px-4 sm:px-8 md:px-8 py-16 md:py-16 relative z-10">
+            <div class="max-w-7xl mx-auto px-4 sm:px-8 md:px-8 py-8 md:py-12 relative z-10">
                 <div class="max-w-3xl mx-auto text-center relative z-10">
                     <motion.h1 :initial="{ opacity: 0, y: 30 }" :animate="{ opacity: 1, y: 0 }"
                         :transition="{ duration: 0.8, ease: 'easeOut' }"
-                        class="hero-title text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold leading-tight sm:leading-[1.5] md:leading-[2] mb-6 tracking-tight text-(--color-text)">
+                        class="hero-title text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold leading-tight sm:leading-tight md:leading-tight mb-4 tracking-tight text-(--color-text)">
                         {{ $t('hero.title') }}
                     </motion.h1>
                     <motion.p :initial="{ opacity: 0, y: 30 }" :animate="{ opacity: 1, y: 0 }"
                         :transition="{ duration: 0.8, delay: 0.2, ease: 'easeOut' }"
-                        class="hero-subtitle text-lg sm:text-xl md:text-[1.375rem] text-(--color-text-secondary) leading-relaxed mb-12 max-w-2xl mx-auto">
+                        class="hero-subtitle text-lg sm:text-xl md:text-[1.375rem] text-(--color-text-secondary) leading-relaxed mb-8 max-w-2xl mx-auto">
                         {{ $t('hero.subtitle') }}
                     </motion.p>
                     <motion.div :initial="{ opacity: 0, y: 20 }" :animate="{ opacity: 1, y: 0 }"
@@ -157,6 +158,11 @@ onMounted(() => {
                         {{ $t('rooms.subtitle') }}
                     </p>
                 </div>
+
+                <!-- Bootcamp Announcement -->
+                <AppAnnouncement :emphasize="$t('bootcamp.announcement.emphasize')"
+                    :description="$t('bootcamp.announcement.description')" :cta-label="$t('bootcamp.announcement.cta')"
+                    :cta-href="localePath('/bootcamp')" class="mb-10" />
 
                 <div class="grid grid-cols-[repeat(auto-fill,minmax(340px,1fr))] gap-8">
                     <RoomCard v-for="room in rooms" :key="room.slug" :title="$t(room.titleKey)"
