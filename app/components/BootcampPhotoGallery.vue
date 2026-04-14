@@ -23,7 +23,7 @@ const photos = [
         }">
             <template #default="{ item }">
                 <div class="overflow-hidden rounded-lg border border-border bg-bg-card shadow-sm">
-                    <img :src="item.src" :alt="item.alt" class="w-full aspect-[4/3] object-cover block" loading="lazy">
+                    <NuxtImg :src="item.src" :alt="item.alt" class="w-full aspect-[4/3] object-cover block" loading="lazy" provider="cloudflare" />
                     <p class="text-[10px] text-text-secondary text-center px-2 py-1.5 line-clamp-1">
                         {{ item.alt }}
                     </p>

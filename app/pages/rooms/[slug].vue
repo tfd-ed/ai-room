@@ -110,8 +110,8 @@ useSeoMeta({
                     <!-- Auhor and Date -->
                     <div class="flex items-center gap-4 mt-6">
                         <div class="flex items-center gap-3">
-                            <img v-if="page?.avatar" :src="page.avatar" alt="Author Avatar"
-                                class="w-15 h-15 rounded-full object-cover" />
+                            <NuxtImg v-if="page?.avatar" :src="page.avatar" alt="Author Avatar"
+                                class="w-15 h-15 rounded-full object-cover" provider="cloudflare" />
                             <div>
                                 <p class="text-sm font-medium text-text">{{ page?.author }}</p>
                                 <p class="text-xs text-text-secondary">

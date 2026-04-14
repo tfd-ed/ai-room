@@ -9,14 +9,13 @@ export default defineNuxtConfig({
     '@nuxt/ui',
     '@nuxt/eslint',
     '@nuxt/content',
-    // 'nuxt-llms',
-    // '@nuxtjs/google-fonts',
     '@nuxtjs/i18n',
     '@stefanobartoletti/nuxt-social-share',
     'nuxt-og-image',
     'motion-v/nuxt',
     '@nuxt/fonts',
     '@nuxtjs/sitemap',
+    '@nuxt/image'
   ],
   css: ['./app/assets/css/main.css', 'katex/dist/katex.min.css'],
   devtools: { enabled: true },
@@ -25,6 +24,11 @@ export default defineNuxtConfig({
     classSuffix: '',
     preference: 'system',
     fallback: 'light'
+  },
+  image: {
+    cloudflare: {
+      baseURL: 'https://ai.tfdevs.com'
+    }
   },
   app: {
     pageTransition: { name: 'page', mode: 'out-in' },

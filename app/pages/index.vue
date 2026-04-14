@@ -177,7 +177,7 @@ onMounted(() => {
             <div class="max-w-7xl mx-auto">
                 <div class="text-center">
                     <!-- small TFD logo at the middle -->
-                    <img src="/assets/img/tfd_logo.jpeg" alt="TFDevs Logo" class="mx-auto mb-4 w-12 h-12" />
+                    <NuxtImg src="/assets/img/tfd_logo.jpeg" alt="TFDevs Logo" class="mx-auto mb-4 w-12 h-12" provider="cloudflare" />
                     <p class="text-(--color-text) font-semibold text-lg mb-2">{{ $t('footer.title') }}</p>
                     <!-- <p class="text-(--color-text-secondary) text-[0.9375rem] mb-6">{{ $t('footer.subtitle') }}</p> -->
 
