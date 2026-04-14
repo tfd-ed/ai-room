@@ -1,16 +1,16 @@
 <script setup lang="ts">
 const photos = [
     {
-        src: '/assets/promotion/me-teaching-bootcamp-photo-taken-from-behind.jpeg',
+        src: '/assets/promotion/me-teaching-bootcamp-photo-taken-from-behind.jpg',
         alt: 'Live teaching session',
     },
-    // {
-    //     src: '/assets/promotion/google-meeting-photo-session-b3.png',
-    //     alt: 'Online session — Batch 3',
-    // },
     {
-        src: '/assets/promotion/panel-speaking.jpeg',
+        src: '/assets/promotion/panel-speaking.jpg',
         alt: 'Panel speaking engagement',
+    },
+    {
+        src: '/assets/promotion/google-meeting-photo-session-b3.jpg',
+        alt: 'Online session — Batch 3',
     },
 ]
 </script>
@@ -23,7 +23,8 @@ const photos = [
         }">
             <template #default="{ item }">
                 <div class="overflow-hidden rounded-lg border border-border bg-bg-card shadow-sm">
-                    <NuxtImg :src="item.src" :alt="item.alt" class="w-full aspect-[4/3] object-cover block" loading="lazy" provider="cloudflare" />
+                    <NuxtImg :src="item.src" :alt="item.alt" class="w-full aspect-[4/3] object-cover block"
+                        loading="lazy" provider="cloudflare" />
                     <p class="text-[10px] text-text-secondary text-center px-2 py-1.5 line-clamp-1">
                         {{ item.alt }}
                     </p>

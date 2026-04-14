@@ -10,7 +10,8 @@ const authorUrl = 'https://www.youtube.com/@tfdevs'
         <span class="hidden sm:inline text-text-secondary text-xs uppercase tracking-wider">By</span>
         <div class="flex items-center justify-center">
             <NuxtImg src="/assets/img/tfd_logo.jpeg" alt="Logo"
-                class="w-6 h-6 object-contain  transition-transform duration-300 group-hover:scale-110" provider="cloudflare" />
+                class="w-6 h-6 object-contain  transition-transform duration-300 group-hover:scale-110"
+                provider="cloudflare" />
         </div>
     </a>
 </template>
